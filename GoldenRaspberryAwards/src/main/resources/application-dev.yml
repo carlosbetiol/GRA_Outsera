@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  compression:
+    enabled: true
+
+logging:
+  level:
+    root: INFO
+    org.springframework.web: INFO
+#    org.springframework.security: INFO
+#    org.springframework.security.oauth2: INFO
+#    org.hibernate.SQL: DEBUG
+#    org.hibernate.type.descriptor.sql: DEBUG
+#    org.springframework: DEBUG
+#    org.springframework.boot.autoconfigure: DEBUG
+#    spring.data.h2: DEBUG
+
+spring:
+  jpa:
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+#  security:
+#    oauth2:
+#      resourceserver:
+#        jwt:
+#          issuer-uri: http://supriodonto.local:8080
+#  #          issuer-uri: ${PEDIDOSAPI_SECURITY_AUTH-SERVER-URL}
+  flyway:
+    enabled: true
+#    locations: filesystem:db/migration,filesystem:db/testdata
+    locations: filesystem:db/migration
+    table: migrations
+#    baseline-on-migrate: true
+
