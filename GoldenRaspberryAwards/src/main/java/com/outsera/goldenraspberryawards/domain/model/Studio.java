@@ -6,6 +6,7 @@ import lombok.Setter;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "studio")
@@ -19,6 +20,9 @@ public class Studio extends AbstractEntity{
 
     @Column(nullable = false)
     private String name;
+
+    @ManyToMany(mappedBy = "studios")
+    private Set<Movie> movies;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;

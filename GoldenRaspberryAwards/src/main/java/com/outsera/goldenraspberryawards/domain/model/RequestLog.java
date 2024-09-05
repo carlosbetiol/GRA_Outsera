@@ -24,7 +24,7 @@ public class RequestLog extends AbstractEntity {
     private String requestUUID;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name="method", nullable = false)

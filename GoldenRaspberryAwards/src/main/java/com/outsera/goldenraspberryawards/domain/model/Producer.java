@@ -21,11 +21,8 @@ public class Producer extends AbstractEntity{
     @Column(nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "studios")
-    private Set<Movie> movies;
-
     @ManyToMany(mappedBy = "producers")
-    private Set<Movie> producers;
+    private Set<Movie> movies;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
