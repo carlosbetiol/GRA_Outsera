@@ -14,7 +14,12 @@ logging:
 
 spring:
   flyway:
-    enabled: true
+    enabled: false
+    #    locations: filesystem:db/migration,filesystem:db/testdata
+    locations: db/migration
+    table: migrations
+    default-schema: gra_db
+#    baseline-on-migrate: true
 #  security:
 #    oauth2:
 #      resourceserver:

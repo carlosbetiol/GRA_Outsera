@@ -20,6 +20,9 @@ public class User extends AbstractEntity{
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private String username;
+
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 

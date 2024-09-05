@@ -30,9 +30,10 @@ spring:
 #          issuer-uri: http://supriodonto.local:8080
 #  #          issuer-uri: ${PEDIDOSAPI_SECURITY_AUTH-SERVER-URL}
   flyway:
-    enabled: true
+    enabled: false
 #    locations: filesystem:db/migration,filesystem:db/testdata
-    locations: filesystem:db/migration
+    locations: db/migration
     table: migrations
+    default-schema: gra_db
 #    baseline-on-migrate: true
 
