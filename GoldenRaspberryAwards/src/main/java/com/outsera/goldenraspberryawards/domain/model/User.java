@@ -8,7 +8,7 @@ import java.time.OffsetDateTime;
 import java.util.Objects;
 
 @Entity
-@Table(name = "user")
+@Table(name = "sys_user")
 @Getter
 @Setter
 public class User extends AbstractEntity{
@@ -19,6 +19,9 @@ public class User extends AbstractEntity{
 
     @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String username;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;

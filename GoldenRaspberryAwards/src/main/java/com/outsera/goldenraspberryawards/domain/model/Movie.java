@@ -25,7 +25,8 @@ public class Movie extends AbstractEntity{
     @JoinTable(
             name = "movie_studio",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "studio_id")
+            inverseJoinColumns = @JoinColumn(name = "studio_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"movie_id", "studio_id"})
     )
     private Set<Studio> studios;
 
@@ -33,7 +34,8 @@ public class Movie extends AbstractEntity{
     @JoinTable(
             name = "movie_producer",
             joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "producer_id")
+            inverseJoinColumns = @JoinColumn(name = "producer_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"movie_id", "producer_id"})
     )
     private Set<Producer> producers;
 

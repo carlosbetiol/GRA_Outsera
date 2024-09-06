@@ -23,6 +23,3 @@ spring:
 #        jwt:
 #          issuer-uri: http://supriodonto.local:8080
 #  #          issuer-uri: ${PEDIDOSAPI_SECURITY_AUTH-SERVER-URL}
-  flyway:
-    enabled: false
-

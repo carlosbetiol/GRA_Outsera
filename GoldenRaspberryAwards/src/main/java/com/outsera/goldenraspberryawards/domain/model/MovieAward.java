@@ -17,11 +17,11 @@ public class MovieAward extends AbstractEntity{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Integer year;
+    @Column(name = "award_year", nullable = false)
+    private Integer awardYear;
 
     @ManyToOne
-    @JoinColumn(name = "id")
+    @JoinColumn(name = "movie_id")
     private Movie movieWinner;
 
     @Column(name = "created_at", nullable = false)
