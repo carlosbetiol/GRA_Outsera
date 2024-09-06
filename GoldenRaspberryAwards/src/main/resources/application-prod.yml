@@ -12,14 +12,7 @@ logging:
     org.springframework.security.oauth2: INFO
     spring.data.h2: INFO
 
-spring:
-  flyway:
-    enabled: false
-    #    locations: filesystem:db/migration,filesystem:db/testdata
-    locations: db/migration
-    table: migrations
-    default-schema: gra_db
-#    baseline-on-migrate: true
+#spring:
 #  security:
 #    oauth2:
 #      resourceserver:

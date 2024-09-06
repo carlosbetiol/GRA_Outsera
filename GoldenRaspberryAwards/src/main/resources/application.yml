@@ -9,8 +9,9 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
+        default_schema: awards_schema
   datasource:
-    url: jdbc:h2:mem:gra_db
+    url: jdbc:h2:mem:gra_db;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS awards_schema
     username: sa
     password: password
     hikari:
@@ -20,6 +21,15 @@ spring:
     console:
       enabled: true
       path: /h2-console
+  flyway:
+    enabled: true
+    url: jdbc:h2:mem:gra_db
+    locations: db/migration, db/data
+    table: migrations
+    default-schema: AWARDS_SCHEMA
+    user: sa
+    password: password
+
 
 springdoc:
   pathsToMatch: /**
