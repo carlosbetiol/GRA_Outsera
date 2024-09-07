@@ -35,8 +35,8 @@ springdoc:
   pathsToMatch: /**
   swagger-ui:
     path: /docs
-#    oauth:
-#      use-basic-authentication-with-access-code-grant: true
+    oauth:
+      use-basic-authentication-with-access-code-grant: true
     show-extensions: true
     show-common-extensions: true
 
