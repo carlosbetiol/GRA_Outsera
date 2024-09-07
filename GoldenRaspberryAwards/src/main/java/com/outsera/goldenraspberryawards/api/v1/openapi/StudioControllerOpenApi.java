@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.StudioCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.request.StudioRequestDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.StudioResponseDTO;
@@ -43,6 +44,7 @@ public interface StudioControllerOpenApi {
                             schema = @Schema(implementation = PagedStudioResponseDTO.class)))
     })
     public PagedModel<StudioResponseDTO> getAllResources(
+            StudioCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
@@ -54,9 +56,9 @@ public interface StudioControllerOpenApi {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(type = "array", implementation = StudioResponseDTO.class)))
     })
-    public ResponseEntity<List<StudioResponseDTO>>  getAllResources();
+    public List<StudioResponseDTO>  getAllResources();
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = StudioResponseDTO.class))}),

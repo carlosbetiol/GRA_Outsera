@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.MovieAwardCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.request.MovieAwardRequestDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.MovieAwardResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
@@ -43,6 +44,7 @@ public interface MovieAwardControllerOpenApi {
                             schema = @Schema(implementation = PagedMovieAwardResponseDTO.class)))
     })
     public PagedModel<MovieAwardResponseDTO> getAllResources(
+            MovieAwardCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
@@ -54,9 +56,9 @@ public interface MovieAwardControllerOpenApi {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(type = "array", implementation = MovieAwardResponseDTO.class)))
     })
-    public ResponseEntity<List<MovieAwardResponseDTO>>  getAllResources();
+    public List<MovieAwardResponseDTO>  getAllResources();
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = MovieAwardResponseDTO.class))}),

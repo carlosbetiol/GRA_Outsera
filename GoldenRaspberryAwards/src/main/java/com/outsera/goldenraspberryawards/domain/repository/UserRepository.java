@@ -15,7 +15,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByEmail(String email);
 
-    @Query("SELECT u FROM User u JOIN FETCH u.roles ur LEFT JOIN FETCH ur.permissions urp WHERE u.email = :email")
+    @Query("SELECT u FROM User u JOIN FETCH u.roles ur LEFT JOIN FETCH ur.rolePermissions urp LEFT JOIN FETCH urp.permission WHERE u.email = :email")
     Optional<User> findByEmailToAuthentication(String email);
 
     Page<User> findAll(Specification<User> spec, Pageable pageable);

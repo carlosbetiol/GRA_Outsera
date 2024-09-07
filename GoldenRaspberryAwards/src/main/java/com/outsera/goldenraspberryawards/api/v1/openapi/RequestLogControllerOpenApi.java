@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.RequestLogCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.response.RequestLogResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedRequestLogResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +39,13 @@ public interface RequestLogControllerOpenApi {
                             schema = @Schema(implementation = PagedRequestLogResponseDTO.class)))
     })
     public PagedModel<RequestLogResponseDTO> getAllResources(
+            RequestLogCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
 
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = RequestLogResponseDTO.class))}),

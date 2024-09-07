@@ -32,8 +32,8 @@ public class Permission extends AbstractEntity{
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<Role> permissions;
+    @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Permission> permissionRoles;
 
     @Override
     public boolean equals(Object o) {

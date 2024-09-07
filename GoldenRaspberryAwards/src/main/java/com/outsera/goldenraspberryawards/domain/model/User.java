@@ -52,6 +52,10 @@ public class User extends AbstractEntity{
     )
     private Set<Role> roles;
 
+    public Boolean isAdmin() {
+        return this.getRoles().stream().anyMatch(g -> g.getIdentifier().equalsIgnoreCase("admin"));
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.PersistenceLogCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.response.PersistenceLogResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedPersistenceLogResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +39,13 @@ public interface PersistenceLogControllerOpenApi {
                             schema = @Schema(implementation = PagedPersistenceLogResponseDTO.class)))
     })
     public PagedModel<PersistenceLogResponseDTO> getAllResources(
+            PersistenceLogCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
 
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = PersistenceLogResponseDTO.class))}),

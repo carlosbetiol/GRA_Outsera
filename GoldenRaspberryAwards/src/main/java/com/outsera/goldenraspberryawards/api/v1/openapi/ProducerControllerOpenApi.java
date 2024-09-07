@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedProducerResponseDTO;
@@ -42,6 +43,7 @@ public interface ProducerControllerOpenApi {
                             schema = @Schema(implementation = PagedProducerResponseDTO.class)))
     })
     public PagedModel<ProducerResponseDTO> getAllResources(
+            ProducerCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
@@ -53,9 +55,9 @@ public interface ProducerControllerOpenApi {
                     content = @Content(mediaType = "application/json",
                             schema = @Schema(type = "array", implementation = ProducerResponseDTO.class)))
     })
-    public ResponseEntity<List<ProducerResponseDTO>>  getAllResources();
+    public List<ProducerResponseDTO>  getAllResources();
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = ProducerResponseDTO.class))}),

@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.RoleCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.response.RoleResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedRoleResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +39,13 @@ public interface RoleControllerOpenApi {
                             schema = @Schema(implementation = PagedRoleResponseDTO.class)))
     })
     public PagedModel<RoleResponseDTO> getAllResources(
+            RoleCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
 
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = RoleResponseDTO.class))}),
@@ -52,7 +54,7 @@ public interface RoleControllerOpenApi {
     })
     public RoleResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
-    @Operation(summary = "List resource by identifier", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by identifier", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = RoleResponseDTO.class))}),

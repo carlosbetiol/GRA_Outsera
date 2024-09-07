@@ -1,6 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.outsera.goldenraspberryawards.domain.enums.PermissionActionEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,27 +8,29 @@ import lombok.experimental.Accessors;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "user_role")
 @Getter
 @Setter
 @Accessors(chain = true)
-public class Role extends AbstractEntity{
+public class RolePermission extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name="active", nullable = false)
-    private Boolean isActive;
+    @ManyToOne
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @ManyToOne
+    @JoinColumn(name = "permission_id", nullable = false)
+    private Permission permission;
 
     @Column(nullable = false)
-    private String identifier;
-
-    @Column(nullable = false)
-    private String name;
+    @Enumerated(EnumType.STRING)
+    private PermissionActionEnum action;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -36,19 +38,13 @@ public class Role extends AbstractEntity{
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    @ManyToMany(mappedBy = "roles")
-    private Set<User> users;
-
-    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<RolePermission> rolePermissions;
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Role user = (Role) o;
-        return Objects.equals(id, user.id);
+        RolePermission rolePermission = (RolePermission) o;
+        return Objects.equals(id, rolePermission.id);
     }
 
     @Override
