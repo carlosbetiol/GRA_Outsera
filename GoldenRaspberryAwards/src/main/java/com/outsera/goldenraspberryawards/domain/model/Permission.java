@@ -1,6 +1,5 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,31 +10,21 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "sys_user")
+@Table(name = "role")
 @Getter
 @Setter
 @Accessors(chain = true)
-public class User extends AbstractEntity{
+public class Permission extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
-    private String name;
+    private String identifier;
 
     @Column(nullable = false)
-    private String email;
-
-    @Column(name="active", nullable = false)
-    private Boolean isActive;
-
-    @JsonIgnore
-    @Column(nullable = false)
-    private String password;
-
-    @JsonIgnore
-    private String salt;
+    private String description;
 
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
@@ -43,21 +32,15 @@ public class User extends AbstractEntity{
     @Column(name = "updated_at", nullable = false)
     private OffsetDateTime updatedAt;
 
-    @ManyToMany
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
-    )
-    private Set<Role> roles;
+    @ManyToMany(mappedBy = "roles")
+    private Set<Role> permissions;
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        User user = (User) o;
+        Permission user = (Permission) o;
         return Objects.equals(id, user.id);
     }
 

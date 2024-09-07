@@ -39,6 +39,9 @@ public class Movie extends AbstractEntity{
     )
     private Set<Producer> producers;
 
+    @OneToMany(mappedBy = "movieWinner")
+    private Set<MovieAward> movieAwards;
+
     @Column(name = "created_at", nullable = false)
     private OffsetDateTime createdAt;
 
