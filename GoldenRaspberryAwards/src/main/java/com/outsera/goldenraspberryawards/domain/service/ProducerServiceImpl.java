@@ -29,6 +29,7 @@ public class ProducerServiceImpl extends AbstractService implements ProducerServ
     }
 
     @Override
+    @Transactional
     public Producer save(Producer producer) {
         return (Producer) super.registerLog(producerRepository.save(producer));
     }
