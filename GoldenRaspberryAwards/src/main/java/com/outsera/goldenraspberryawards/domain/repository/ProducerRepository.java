@@ -16,4 +16,5 @@ public interface ProducerRepository extends JpaRepository<Producer, Long> {
     Page<Producer> findAll(Specification<Producer> spec, Pageable pageable);
 
     List<Producer> findAllByOrderByNameAsc();
+
 }
