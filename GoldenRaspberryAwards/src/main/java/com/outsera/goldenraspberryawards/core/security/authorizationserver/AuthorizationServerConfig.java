@@ -36,7 +36,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
@@ -44,10 +47,13 @@ import org.springframework.security.oauth2.server.authorization.authentication.O
 import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
+import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,7 +75,30 @@ public class AuthorizationServerConfig {
 	public SecurityFilterChain authorizationServerSecurityFilterChain(HttpSecurity http,
 																	  CustomAuthenticationFailureHandler customAuthenticationFailureHandler,
 																	  CustomLogoutSucessHandler customLogoutSucessHandler) throws Exception {
-		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+//		OAuth2AuthorizationServerConfiguration.applyDefaultSecurity(http);
+		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+				new OAuth2AuthorizationServerConfigurer();
+
+		RequestMatcher endpointsMatcher = authorizationServerConfigurer
+				.getEndpointsMatcher();
+
+		http.securityMatcher(endpointsMatcher)
+				.authorizeHttpRequests(authorize -> { authorize
+						.requestMatchers("/h2-console/**").permitAll()
+						.requestMatchers("/login").permitAll()
+						.requestMatchers("/actuator/**").permitAll()
+						.requestMatchers("/version.json").permitAll()
+						.requestMatchers("/localazy").permitAll()
+						.requestMatchers("/assets/**").permitAll()
+						.anyRequest().authenticated();
+				})
+				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+				.formLogin(Customizer.withDefaults())
+				.exceptionHandling(exceptions -> {
+					exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+				})
+//				.apply(authorizationServerConfigurer);
+				.with(authorizationServerConfigurer, Customizer.withDefaults());
 
 		http.logout(
 				logout -> {
@@ -78,8 +107,44 @@ public class AuthorizationServerConfig {
 				}
 		);
 
+//		return http.build();
+
 		return http.formLogin(customizer -> customizer.loginPage("/login")
 				.failureHandler(customAuthenticationFailureHandler)).build();
+
+//		http
+//				.authorizeHttpRequests(authorize -> authorize
+//						.requestMatchers("/**").permitAll()
+//						.requestMatchers("/login").permitAll()
+//						.requestMatchers("/actuator/**").permitAll()
+//						.requestMatchers("/version.json").permitAll()
+//						.requestMatchers("/localazy").permitAll()
+//						.requestMatchers("/assets/**").permitAll()
+//						.anyRequest().authenticated())
+//				.csrf(AbstractHttpConfigurer::disable)
+//				.oauth2ResourceServer(oauth2 -> oauth2.jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter())));
+
+//		OAuth2AuthorizationServerConfigurer authorizationServerConfigurer =
+//				new OAuth2AuthorizationServerConfigurer();
+//
+//		authorizationServerConfigurer.authorizationEndpoint(
+//				customizer -> customizer.consentPage("/oauth2/consent"));
+//
+//		RequestMatcher endpointsMatcher = authorizationServerConfigurer
+//				.getEndpointsMatcher();
+//
+//		http.securityMatcher(endpointsMatcher)
+//				.authorizeHttpRequests(authorize -> {
+//					authorize.anyRequest().authenticated();
+//				})
+//				.csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+//				.formLogin(Customizer.withDefaults())
+//				.exceptionHandling(exceptions -> {
+//					exceptions.authenticationEntryPoint(new LoginUrlAuthenticationEntryPoint("/login"));
+//				})
+//				.apply(authorizationServerConfigurer);
+//
+//		return http.formLogin(customizer -> customizer.loginPage("/login")).build();
 
 	}
 

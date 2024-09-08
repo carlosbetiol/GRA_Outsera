@@ -42,7 +42,7 @@ public class ProducerController implements ProducerControllerOpenApi {
     }
 
     @CheckSecurity.Producers.CanView
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/list", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Override
     public List<ProducerResponseDTO> getAllResources() {

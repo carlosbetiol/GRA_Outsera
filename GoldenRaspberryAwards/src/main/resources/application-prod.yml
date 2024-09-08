@@ -12,10 +12,10 @@ logging:
     org.springframework.security.oauth2: INFO
     spring.data.h2: INFO
 
-#spring:
-#  security:
-#    oauth2:
-#      resourceserver:
-#        jwt:
-#          issuer-uri: ${PEDIDOSAPI_SECURITY_AUTH-SERVER-URL}
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${AWARDSAPI_SECURITY_AUTH-SERVER-URL}
 

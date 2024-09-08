@@ -23,10 +23,13 @@ alter table sys_user
     drop column username;
 
 alter table sys_user
-    add column email varchar(100) unique not null,
+    add column email varchar(100)        not null,
     add column active boolean            not null,
     add column password varchar(255)     not null,
     add column salt varchar(255)         not null;
+
+ALTER TABLE sys_user
+    ADD CONSTRAINT unique_user_email UNIQUE (email);
 
 create table user_role
 (

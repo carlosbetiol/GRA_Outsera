@@ -33,7 +33,7 @@ public class Permission extends AbstractEntity{
     private OffsetDateTime updatedAt;
 
     @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Permission> permissionRoles;
+    private Set<RolePermission> permissionRoles;
 
     @Override
     public boolean equals(Object o) {

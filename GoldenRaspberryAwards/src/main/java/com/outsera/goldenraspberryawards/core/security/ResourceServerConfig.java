@@ -2,6 +2,7 @@ package com.outsera.goldenraspberryawards.core.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -35,6 +36,7 @@ public class ResourceServerConfig {
 
 		http
 				.authorizeHttpRequests(authorize -> authorize
+						.requestMatchers("/h2-console/**").permitAll()
 						.requestMatchers("/login").permitAll()
 						.requestMatchers("/actuator/**").permitAll()
 						.requestMatchers("/version.json").permitAll()
@@ -52,8 +54,10 @@ public class ResourceServerConfig {
 
 		http.authenticationProvider(customAuthenticationProvider);
 
+
 		return http.formLogin(customizer -> customizer.loginPage("/login")
 				.failureHandler(customAuthenticationFailureHandler)).build();
+
 	}
 
 //    @Bean

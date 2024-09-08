@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.api.v1.mapper;
 
+import com.outsera.goldenraspberryawards.api.qualifier.MinimalResponseModel;
 import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
@@ -25,6 +26,7 @@ public interface ProducerMapper {
     ProducerResponseDTO toResponseModel(Producer entity);
 
     @Mapping(target = "movies", ignore = true)
+    @MinimalResponseModel
     ProducerResponseDTO toMinimalResponseModel(Producer entity);
 
     default List<ProducerResponseDTO> toResponseCollectionModel(List<Producer> entities) {

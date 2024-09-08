@@ -15,10 +15,11 @@ import org.springframework.security.oauth2.server.authorization.settings.TokenSe
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+//@Component
 public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
     private final SecurityProperties securityProperties;
@@ -72,7 +73,10 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
                         .requireAuthorizationConsent(false)
                         .requireProofKey(false)
                         .build())
-                .build();
+                    .clientIdIssuedAt(OffsetDateTime.now().toInstant())
+                    .clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+                    .postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
+                    .build();
         else
             registeredClient = RegisteredClient.withId(clientId)
                     .clientId(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientId())
@@ -95,6 +99,9 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
                             .requireAuthorizationConsent(false)
                             .requireProofKey(false)
                             .build())
+                    .clientIdIssuedAt(OffsetDateTime.now().toInstant())
+                    .clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+                    .postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
                     .build();
 
         registeredClientRepository.save(registeredClient);
@@ -122,6 +129,9 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
                         .requireAuthorizationConsent(false)
                         .requireProofKey(false)
                         .build())
+                .clientIdIssuedAt(OffsetDateTime.now().toInstant())
+                .clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+                .postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
                 .build();
 
         registeredClientRepository.save(registeredClient);
