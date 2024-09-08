@@ -10,7 +10,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "\"permission\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -18,18 +18,19 @@ public class Permission extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "\"identifier\"", nullable = false)
     private String identifier;
 
-    @Column(nullable = false)
+    @Column(name = "\"description\"", nullable = false)
     private String description;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true)

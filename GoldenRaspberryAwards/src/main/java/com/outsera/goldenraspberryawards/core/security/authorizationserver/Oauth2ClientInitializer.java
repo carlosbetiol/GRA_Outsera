@@ -19,7 +19,7 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-//@Component
+@Component
 public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
     private final SecurityProperties securityProperties;

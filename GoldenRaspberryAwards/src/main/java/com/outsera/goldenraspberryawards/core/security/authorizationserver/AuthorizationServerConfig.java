@@ -37,16 +37,11 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
-import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
-import org.springframework.security.oauth2.server.authorization.client.JdbcRegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
-import org.springframework.security.oauth2.server.authorization.config.annotation.web.configuration.OAuth2AuthorizationServerConfiguration;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
@@ -150,12 +145,12 @@ public class AuthorizationServerConfig {
 
 	@Bean
 	public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
-		return new JdbcRegisteredClientRepository(jdbcOperations);
+		return new CustomJdbcRegisteredClientRepository(jdbcOperations);
 	}
 
 	@Bean
 	public OAuth2AuthorizationService authorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
-		return new JdbcOAuth2AuthorizationService( jdbcOperations, registeredClientRepository );
+		return new CustomJdbcOAuth2AuthorizationService( jdbcOperations, registeredClientRepository );
 	}
 
 	@Bean

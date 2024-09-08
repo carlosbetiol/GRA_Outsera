@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "\"role\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -19,21 +19,22 @@ public class Role extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(name="active", nullable = false)
+    @Column(name="\"active\"", nullable = false)
     private Boolean isActive;
 
-    @Column(nullable = false)
+    @Column(name = "\"identifier\"", nullable = false)
     private String identifier;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @ManyToMany(mappedBy = "roles")

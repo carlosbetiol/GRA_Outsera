@@ -12,7 +12,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "persistence_log")
+@Table(name = "\"persistence_log\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -20,29 +20,30 @@ public class PersistenceLog extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "\"user_id\"", nullable = false)
     private User user;
 
-    @Column(name="entity_name", nullable = false)
+    @Column(name="\"entity_name\"", nullable = false)
     private String entityName;
 
-    @Column(name="entity_id", nullable = false)
+    @Column(name="\"entity_id\"", nullable = false)
     private Long entityId;
 
-    @Column(name="json_content", columnDefinition = "json", nullable = false)
+    @Column(name="\"json_content\"", columnDefinition = "json", nullable = false)
     @Convert(converter = JsonObjectToJsonStringConverter.class)
     private JSONObject jsonContent;
 
-    @Column(name="request_uuid", nullable = true)
+    @Column(name="\"request_uuid\"", nullable = true)
     private String requestUUID;
 
-    @Column(name="created_at", nullable = false)
+    @Column(name="\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(nullable = true)
+    @Column(name = "\"action\"", nullable = true)
     @Enumerated(EnumType.STRING)
     private SyslogActionEnum action;
 
