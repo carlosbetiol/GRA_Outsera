@@ -5,6 +5,7 @@ import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.MovieCriter
 import com.outsera.goldenraspberryawards.domain.exception.EntityInUseException;
 import com.outsera.goldenraspberryawards.domain.exception.MovieNotFoundException;
 import com.outsera.goldenraspberryawards.domain.model.Movie;
+import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import com.outsera.goldenraspberryawards.domain.model.SysEntity;
 import com.outsera.goldenraspberryawards.domain.repository.MovieRepository;
 import com.outsera.goldenraspberryawards.domain.specification.MovieSpecification;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl extends AbstractService implements MovieService {
@@ -35,9 +37,20 @@ public class MovieServiceImpl extends AbstractService implements MovieService {
     }
 
     @Override
+    @Transactional
+    public Movie saveLogLess(Movie movie) {
+        return movieRepository.save(movie);
+    }
+
+    @Override
     public Movie findById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
+    }
+
+    @Override
+    public Optional<Movie> findByName(String name) {
+        return movieRepository.findByName(name);
     }
 
     @Override

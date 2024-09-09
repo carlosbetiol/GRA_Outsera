@@ -108,7 +108,8 @@ public class ResourceServerConfig {
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer() {
-		return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"));
+		return (web) -> web.ignoring().requestMatchers(new AntPathRequestMatcher("/h2-console/**"))
+				.and().ignoring().requestMatchers(new AntPathRequestMatcher("/**"));
 	}
 
 }

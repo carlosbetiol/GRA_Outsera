@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StudioServiceImpl extends AbstractService implements StudioService {
@@ -35,9 +36,20 @@ public class StudioServiceImpl extends AbstractService implements StudioService 
     }
 
     @Override
+    @Transactional
+    public Studio saveLogLess(Studio studio) {
+        return studioRepository.save(studio);
+    }
+
+    @Override
     public Studio findById(Long id) {
         return studioRepository.findById(id)
                 .orElseThrow(() -> new StudioNotFoundException(id));
+    }
+
+    @Override
+    public Optional<Studio> findByName(String name) {
+        return studioRepository.findByName(name);
     }
 
     @Override

@@ -10,6 +10,8 @@ public interface MovieAwardService {
 
     MovieAward save(MovieAward movieAward);
 
+    MovieAward saveLogLess(MovieAward movieAward);
+
     MovieAward findById(Long id);
 
     Page<MovieAward> findAll(MovieAwardCriteria criteria, Pageable pageable);

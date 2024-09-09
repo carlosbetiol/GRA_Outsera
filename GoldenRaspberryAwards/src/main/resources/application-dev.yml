@@ -9,15 +9,16 @@ logging:
     org.springframework.web: INFO
 #    org.springframework.security: INFO
 #    org.springframework.security.oauth2: INFO
-#    org.hibernate.SQL: DEBUG
-#    org.hibernate.type.descriptor.sql: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+    org.hibernate.type.descriptor.sql: DEBUG
 #    org.springframework: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
-#    spring.data.h2: DEBUG
+    spring.data.h2: DEBUG
 
 spring:
   jpa:
-    show-sql: false
+    show-sql: true
     properties:
       hibernate.format_sql: true
     generate-ddl: false
@@ -38,6 +39,7 @@ awardsapi:
     dbname: supriodonto_dev
     username: root
     password: 123456
+    csv-file-path: movielist.csv
 
   jwt:
     keystore:

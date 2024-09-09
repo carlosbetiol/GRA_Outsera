@@ -30,4 +30,6 @@ public class DatabaseProperties {
 	@NotBlank
 	private String password;
 
+	private String csvFilePath;
+
 }

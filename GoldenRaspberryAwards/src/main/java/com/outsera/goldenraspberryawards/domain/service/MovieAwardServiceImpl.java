@@ -33,6 +33,12 @@ public class MovieAwardServiceImpl extends AbstractService implements MovieAward
     }
 
     @Override
+    @Transactional
+    public MovieAward saveLogLess(MovieAward movieAward) {
+        return movieAwardRepository.save(movieAward);
+    }
+
+    @Override
     public MovieAward findById(Long id) {
         return movieAwardRepository.findById(id)
                 .orElseThrow(() -> new MovieAwardNotFoundException(id));

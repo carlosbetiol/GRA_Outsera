@@ -4,6 +4,7 @@ import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCri
 import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
+import jakarta.persistence.criteria.Fetch;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
@@ -11,6 +12,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class ProducerSpecification {
 

@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface PermissionRepository extends JpaRepository<Permission, Long> {
+public interface PermissionRepository extends JpaRepository<Permission, Long>, PermissionRepositoryCustom {
 
     Optional<Permission> findByIdentifier(String identifier);
-
-    Page<Permission> findAll(Specification<Permission> spec, Pageable pageable);
 
 }

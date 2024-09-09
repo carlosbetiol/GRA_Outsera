@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.core.security.authorizationserver;
 
 import com.outsera.goldenraspberryawards.core.security.SecurityProperties;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.core.env.Environment;
@@ -20,6 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Component
+@Log4j2
 public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
     private final SecurityProperties securityProperties;
@@ -39,6 +41,7 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
 
+        log.info("Initializing Oauth2 Clients");
         createOrUpdateFrontWebOauth2Client();
         createOrUpdateIntegrationbOauth2Client();
 

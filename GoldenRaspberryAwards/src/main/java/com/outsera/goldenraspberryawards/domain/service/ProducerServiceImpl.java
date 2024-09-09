@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProducerServiceImpl extends AbstractService implements ProducerService {
@@ -35,9 +36,20 @@ public class ProducerServiceImpl extends AbstractService implements ProducerServ
     }
 
     @Override
+    @Transactional
+    public Producer saveLogLess(Producer producer) {
+        return producerRepository.save(producer);
+    }
+
+    @Override
     public Producer findById(Long id) {
         return producerRepository.findById(id)
                 .orElseThrow(() -> new ProducerNotFoundException(id));
+    }
+
+    @Override
+    public Optional<Producer> findByName(String name) {
+        return producerRepository.findByName(name);
     }
 
     @Override
