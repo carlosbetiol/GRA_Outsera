@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "sys_user")
+@Table(name = "\"sys_user\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -19,38 +19,44 @@ public class User extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(name = "\"email\"", nullable = false)
     private String email;
 
-    @Column(name="active", nullable = false)
+    @Column(name="\"active\"", nullable = false)
     private Boolean isActive;
 
     @JsonIgnore
-    @Column(nullable = false)
+    @Column(name = "\"password\"", nullable = false)
     private String password;
 
     @JsonIgnore
+    @Column(name = "\"salt\"", nullable = false)
     private String salt;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @ManyToMany
     @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "role_id"})
+            name = "\"user_role\"",
+            joinColumns = @JoinColumn(name = "\"user_id\""),
+            inverseJoinColumns = @JoinColumn(name = "\"role_id\""),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"\"user_id\"", "\"role_id\""})
     )
     private Set<Role> roles;
+
+    public Boolean isAdmin() {
+        return this.getRoles().stream().anyMatch(g -> g.getIdentifier().equalsIgnoreCase("admin"));
+    }
 
     @Override
     public boolean equals(Object o) {

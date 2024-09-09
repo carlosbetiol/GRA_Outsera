@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,25 +10,27 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "producer")
+@Table(name = "\"producer\"")
 @Getter
 @Setter
 public class Producer extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
-    @ManyToMany(mappedBy = "producers")
+    @JsonIgnore
+    @ManyToMany(mappedBy = "producers", fetch = FetchType.LAZY)
     private Set<Movie> movies;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @Override

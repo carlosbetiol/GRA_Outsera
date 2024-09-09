@@ -15,12 +15,12 @@ import lombok.experimental.Accessors;
 public class MovieAwardRequestDTO extends GenericTrackableRequestDTO {
 
     @Schema(example = "Cruising", requiredProperties = "true")
-    @NotBlank(message = "Name is required")
+    @NotNull(message = "Name is required")
     @Min(value = 1, message = "Invalid year")
     private Integer awardYear;
 
     @NotNull(message = "Movie is required")
     @Valid
-    private IdRequestDTO movie;
+    private IdRequestDTO movieWinner;
 
 }

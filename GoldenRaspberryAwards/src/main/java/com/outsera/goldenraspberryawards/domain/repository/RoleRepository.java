@@ -10,10 +10,8 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface RoleRepository extends JpaRepository<Role, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long>, RoleRepositoryCustom {
 
     Optional<Role> findByIdentifier(String identifier);
-
-    Page<Role> findAll(Specification<Role> spec, Pageable pageable);
 
 }

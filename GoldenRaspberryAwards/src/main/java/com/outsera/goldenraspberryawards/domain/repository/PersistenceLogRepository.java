@@ -8,8 +8,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PersistenceLogRepository extends JpaRepository<PersistenceLog, Long> {
-
-    Page<PersistenceLog> findAll(Specification<PersistenceLog> spec, Pageable pageable);
+public interface PersistenceLogRepository extends JpaRepository<PersistenceLog, Long>, PersistenceLogRepositoryCustom {
 
 }

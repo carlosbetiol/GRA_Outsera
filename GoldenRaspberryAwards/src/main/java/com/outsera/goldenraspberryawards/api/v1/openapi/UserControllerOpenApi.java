@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.UserCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.response.UserResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedUserResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +39,13 @@ public interface UserControllerOpenApi {
                             schema = @Schema(implementation = PagedUserResponseDTO.class)))
     })
     public PagedModel<UserResponseDTO> getAllResources(
+            UserCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
 
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = UserResponseDTO.class))}),
@@ -51,14 +53,5 @@ public interface UserControllerOpenApi {
                     schema = @Schema(implementation = Problem.class))})
     })
     public UserResponseDTO getResource(@Parameter(description = "Resource id") Long id);
-
-    @Operation(summary = "List resource by email", security = @SecurityRequirement(name="userScheme"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = UserResponseDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Problem.class))})
-    })
-    public UserResponseDTO getResource(@Parameter(description = "Resource email") String email);
 
 }

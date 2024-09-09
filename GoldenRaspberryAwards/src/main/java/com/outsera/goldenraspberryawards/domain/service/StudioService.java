@@ -6,12 +6,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface StudioService {
 
     Studio save(Studio studio);
 
+    Studio saveLogLess(Studio studio);
+
     Studio findById(Long id);
+
+    Optional<Studio> findByName(String name);
 
     Page<Studio> findAll(StudioCriteria criteria, Pageable pageable);
 

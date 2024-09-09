@@ -4,6 +4,7 @@ import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.CriteriaSta
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.RoleCriteria;
 import com.outsera.goldenraspberryawards.domain.model.Permission;
 import com.outsera.goldenraspberryawards.domain.model.Role;
+import com.outsera.goldenraspberryawards.domain.model.RolePermission;
 import com.outsera.goldenraspberryawards.domain.model.User;
 import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.JoinType;
@@ -22,7 +23,8 @@ public class RoleSpecification {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Join<Role, Permission> permissionJoin = root.join("permissions", JoinType.LEFT);
+            Join<Role, RolePermission> rolePermissionsJoin = root.join("rolePermissions", JoinType.LEFT);
+            Join<RolePermission, Permission> permissionJoin = rolePermissionsJoin.join("permission", JoinType.LEFT);
             Join<Role, User> userJoin = root.join("users", JoinType.LEFT);
 
             if (criteria.getStatus() != null && !criteria.getStatus().equals(CriteriaStatusEnum.ALL)) {
@@ -30,15 +32,15 @@ public class RoleSpecification {
             }
 
             if (criteria.getPermissionIdentifier() != null && !criteria.getPermissionIdentifier().isEmpty() ) {
-                predicates.add(builder.equal(permissionJoin.get("identifier"), criteria.getPermissionIdentifier()));
+                predicates.add(permissionJoin.get("identifier").in(criteria.getPermissionIdentifier()));
             }
 
             if (criteria.getUserId() != null && !criteria.getUserId().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("id"), criteria.getUserId()));
+                predicates.add(userJoin.get("id").in(criteria.getUserId()));
             }
 
             if (criteria.getUserEmail() != null && !criteria.getUserEmail().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("email"), criteria.getUserEmail()));
+                predicates.add(userJoin.get("email").in(criteria.getUserEmail()));
             }
 
             if (criteria.getSearch() != null && !criteria.getSearch().isEmpty()) {

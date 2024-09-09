@@ -15,8 +15,8 @@ public enum ProblemType {
 	RESOURCE_NOT_FOUND("/resource-not-found", MessageSystem.getInstance().getLocalizedMessage("exception.resourceNotFoundTitle")),
 	ENTITY_IN_USE("/entity-in-use", MessageSystem.getInstance().getLocalizedMessage("exception.entityInUseTitle")),
 	BUSINESS_ERROR("/business-error", MessageSystem.getInstance().getLocalizedMessage("exception.businessErrorTitle")),
-	TOKEN_BLACKLISTED("/token-error", MessageSystem.getInstance().getLocalizedMessage("exception.tokenBlackListed"));
-	
+	REFERENCED_RESOURCE_NOT_FOUND("/referenced-resource-not-found", MessageSystem.getInstance().getLocalizedMessage("exception.referencedResourceNotFoundTitle")),;
+
 	private String title;
 	private String uri;
 

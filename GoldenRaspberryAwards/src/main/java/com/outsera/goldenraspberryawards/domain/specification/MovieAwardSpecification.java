@@ -20,7 +20,7 @@ public class MovieAwardSpecification {
         return (root, query, builder) -> {
             List<Predicate> predicates = new ArrayList<>();
 
-            Join<MovieAward, Movie> movieJoin = root.join("movie", JoinType.INNER);
+            Join<MovieAward, Movie> movieJoin = root.join("movieWinner", JoinType.INNER);
             Join<Movie, Studio> studioJoin = movieJoin.join("studios", JoinType.INNER);
             Join<Movie, Producer> producerJoin = movieJoin.join("producers", JoinType.INNER);
 

@@ -11,7 +11,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "role")
+@Table(name = "\"role\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -19,34 +19,31 @@ public class Role extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(name="active", nullable = false)
+    @Column(name="\"active\"", nullable = false)
     private Boolean isActive;
 
-    @Column(nullable = false)
+    @Column(name = "\"identifier\"", nullable = false)
     private String identifier;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
-    @Column(name = "created_at", nullable = false)
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
-    @ManyToMany
-    @JoinTable(
-            name = "role_permission",
-            joinColumns = @JoinColumn(name = "role_id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"role_id", "permission_id"})
-    )
-    private Set<Permission> permissions;
+    @JsonIgnore
+    @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<RolePermission> rolePermissions;
 
     @Override
     public boolean equals(Object o) {

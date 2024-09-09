@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovieServiceImpl extends AbstractService implements MovieService {
@@ -31,13 +32,32 @@ public class MovieServiceImpl extends AbstractService implements MovieService {
     @Override
     @Transactional
     public Movie save(Movie movie) {
+        Movie mv = (Movie) super.registerLog(movieRepository.save(movie));
+        movieRepository.detach(mv);
+        return findById(mv.getId());
+    }
+
+    @Transactional
+    @Override
+    public Movie update(Movie movie) {
         return (Movie) super.registerLog(movieRepository.save(movie));
+    }
+
+    @Override
+    @Transactional
+    public Movie saveLogLess(Movie movie) {
+        return movieRepository.save(movie);
     }
 
     @Override
     public Movie findById(Long id) {
         return movieRepository.findById(id)
                 .orElseThrow(() -> new MovieNotFoundException(id));
+    }
+
+    @Override
+    public Optional<Movie> findByName(String name) {
+        return movieRepository.findByName(name);
     }
 
     @Override
@@ -55,7 +75,7 @@ public class MovieServiceImpl extends AbstractService implements MovieService {
     @Transactional
     public void delete(Long id) {
 
-        SysEntity entity = movieRepository.findById(id).orElse(null);
+        SysEntity entity = findById(id);
         try {
             movieRepository.deleteById(id);
             movieRepository.flush();

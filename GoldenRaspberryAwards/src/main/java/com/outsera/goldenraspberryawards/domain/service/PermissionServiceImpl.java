@@ -10,6 +10,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class PermissionServiceImpl implements PermissionService {
 
@@ -33,6 +35,11 @@ public class PermissionServiceImpl implements PermissionService {
     public Page<Permission> findAll(PermissionCriteria criteria, Pageable pageable) {
         Specification<Permission> spec = PermissionSpecification.byCriteria( (PermissionCriteria) criteria.parseSearch());
         return permissionRepository.findAll(spec, pageable);
+    }
+
+    @Override
+    public List<Permission> findAll() {
+        return permissionRepository.findAll();
     }
 
 }

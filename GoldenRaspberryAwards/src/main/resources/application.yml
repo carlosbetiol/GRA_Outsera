@@ -8,10 +8,11 @@ spring:
   jpa:
     properties:
       hibernate:
+#        globally_quoted_identifiers: true
         dialect: org.hibernate.dialect.H2Dialect
-        default_schema: awards_schema
+        default_schema: "\"awards_schema\""
   datasource:
-    url: jdbc:h2:mem:gra_db;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS awards_schema
+    url: jdbc:h2:mem:gra_db;DB_CLOSE_DELAY=-1;INIT=CREATE SCHEMA IF NOT EXISTS "awards_schema";DB_CLOSE_ON_EXIT=FALSE
     username: sa
     password: password
     hikari:
@@ -26,7 +27,7 @@ spring:
     url: jdbc:h2:mem:gra_db
     locations: db/migration, db/data
     table: migrations
-    default-schema: AWARDS_SCHEMA
+    default-schema: awards_schema
     user: sa
     password: password
 

@@ -22,10 +22,13 @@ public class UserSpecification {
                 predicates.add(builder.equal(root.get("isActive"), criteria.getStatus().equals(CriteriaStatusEnum.ACTIVE)));
             }
 
+            if (criteria.getEmail() != null && !criteria.getEmail().isEmpty() ) {
+                predicates.add(root.get("email").in(criteria.getEmail()));
+            }
+
             if (criteria.getRoleIdentifier() != null && !criteria.getRoleIdentifier().isEmpty()) {
                 predicates.add(root.get("user").get("roles").in(criteria.getRoleIdentifier()));
             }
-
 
             if (criteria.getSearch() != null && !criteria.getSearch().isEmpty()) {
                 Predicate searchPredicate = builder.conjunction();

@@ -25,7 +25,7 @@ public class MovieAwardResponseDTO {
     private OffsetDateTime updatedAt;
 
     @Schema(example = "Cruising")
-    private MovieResponseDTO movie;
+    private MovieResponseDTO movieWinner;
 
 
 }

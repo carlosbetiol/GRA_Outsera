@@ -3,6 +3,8 @@ package com.outsera.goldenraspberryawards.core.security;
 
 import com.outsera.goldenraspberryawards.core.security.authorizationserver.UserPrincipal;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -15,6 +17,12 @@ import java.util.Optional;
 
 @Component
 public class SecurityRules {
+
+    private final Environment environment;
+
+    public SecurityRules(Environment environment) {
+        this.environment = environment;
+    }
 
     public String getUriRequest() {
 
@@ -48,21 +56,29 @@ public class SecurityRules {
     }
 
     public String getEmail() {
+
+        if(environment.acceptsProfiles(Profiles.of("dev")))
+            return "admin@gra.com";
+
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
         return jwt.getClaim("email");
     }
 
     public Boolean isAdmin() {
+
+        if(environment.acceptsProfiles(Profiles.of("dev")))
+            return true;
+
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
         return Optional.ofNullable(jwt.getClaim("isAdmin")).orElse("no").equals("yes");
     }
 
     public boolean isAuthenticatedUser(Integer userId) {
-        return getUserId().userId() != null && userId != null && getUserId().userId().equals(userId);
+        return environment.acceptsProfiles(Profiles.of("dev")) || (getUserId().userId() != null && userId != null && getUserId().userId().equals(userId));
     }
 
     public boolean hasAuthority(String authorityName) {
-        return getAuthentication().getAuthorities().stream()
+        return environment.acceptsProfiles(Profiles.of("dev")) || getAuthentication().getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals(authorityName));
     }
 

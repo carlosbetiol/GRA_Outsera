@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.api.v1.openapi;
 
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
+import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.PermissionCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.response.PermissionResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedPermissionResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -38,12 +39,13 @@ public interface PermissionControllerOpenApi {
                             schema = @Schema(implementation = PagedPermissionResponseDTO.class)))
     })
     public PagedModel<PermissionResponseDTO> getAllResources(
+            PermissionCriteria criteria,
             @ParameterObject
             @PageableDefault(size = 20, page = 0)
             Pageable pageable);
 
 
-    @Operation(summary = "List resource by id", security = @SecurityRequirement(name="userScheme"))
+    @Operation(summary = "Find resource by id", security = @SecurityRequirement(name="userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
                     schema = @Schema(implementation = PermissionResponseDTO.class))}),
@@ -51,14 +53,5 @@ public interface PermissionControllerOpenApi {
                     schema = @Schema(implementation = Problem.class))})
     })
     public PermissionResponseDTO getResource(@Parameter(description = "Resource id") Long id);
-
-    @Operation(summary = "List resource by identifier", security = @SecurityRequirement(name="userScheme"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PermissionResponseDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Problem.class))})
-    })
-    public PermissionResponseDTO getResource(@Parameter(description = "Resource identifier") String identifier);
 
 }

@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.outsera.goldenraspberryawards.api.contextual.ContextualRequest;
 import com.outsera.goldenraspberryawards.core.internationalization.MessageSystem;
-import com.outsera.goldenraspberryawards.domain.exception.BusinessException;
-import com.outsera.goldenraspberryawards.domain.exception.EntityInUseException;
-import com.outsera.goldenraspberryawards.domain.exception.EntityNotFoundException;
-import com.outsera.goldenraspberryawards.domain.exception.SystemInvalidParameterException;
+import com.outsera.goldenraspberryawards.domain.exception.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
@@ -21,10 +18,10 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
@@ -36,6 +33,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -60,29 +58,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         this.objectMapper = objectMapper;
     }
 
-    @ExceptionHandler(HttpMediaTypeNotAcceptableException.class)
+    @Override
     protected ResponseEntity<Object> handleHttpMediaTypeNotAcceptable(HttpMediaTypeNotAcceptableException ex,
-                                                                      HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                      HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         return ResponseEntity.status(status).headers(headers).build();
     }
 
-
-    @ExceptionHandler(BindException.class)
-    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
-                                                         WebRequest request) {
-
-        return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
-    }
-
-    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
     }
 
     private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
-                                                            HttpStatus status, WebRequest request, BindingResult bindingResult) {
+                                                            HttpStatusCode status, WebRequest request, BindingResult bindingResult) {
         ProblemType problemType = ProblemType.INVALID_DATA;
         String detail = MessageSystem.getInstance().getLocalizedMessage("exception.invalidData");
 
@@ -163,9 +153,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    @ExceptionHandler(NoHandlerFoundException.class)
+    @Override
     protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex,
-                                                                   HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                   HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.RESOURCE_NOT_FOUND;
         String detail = MessageSystem.getInstance().getLocalizedMessage("exception.resourceNotFound",
@@ -178,9 +168,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    @ExceptionHandler(TypeMismatchException.class)
+    @Override
     protected ResponseEntity<Object> handleTypeMismatch(TypeMismatchException ex, HttpHeaders headers,
-                                                        HttpStatus status, WebRequest request) {
+                                                        HttpStatusCode status, WebRequest request) {
 
         if (ex instanceof MethodArgumentTypeMismatchException) {
             return handleMethodArgumentTypeMismatch(
@@ -192,7 +182,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     private ResponseEntity<Object> handleMethodArgumentTypeMismatch(
             MethodArgumentTypeMismatchException ex, HttpHeaders headers,
-            HttpStatus status, WebRequest request) {
+            HttpStatusCode status, WebRequest request) {
 
         ProblemType problemType = ProblemType.INVALID_PARAMETER;
 
@@ -206,9 +196,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,
-                                                                  HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                                  HttpHeaders headers, HttpStatusCode status, WebRequest request) {
         Throwable rootCause = ExceptionUtils.getRootCause(ex);
 
         if (rootCause instanceof InvalidFormatException) {
@@ -228,12 +218,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handlePropertyBinding(PropertyBindingException ex,
-                                                         HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                         HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String path = joinPath(ex.getPath());
 
         ProblemType problemType = ProblemType.INCOMPREHENSIBLE_MESSAGE;
-        String detail = MessageSystem.getInstance().getLocalizedMessage("exception.propertyUnknown",
+        String detail = MessageSystem.getInstance().getLocalizedMessage("exception.propertyUnknow",
                 new Object[]{path});
 
         Problem problem = createProblemBuilder(status, problemType, detail)
@@ -244,7 +234,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<Object> handleInvalidFormat(InvalidFormatException ex,
-                                                       HttpHeaders headers, HttpStatus status, WebRequest request) {
+                                                       HttpHeaders headers, HttpStatusCode status, WebRequest request) {
 
         String path = joinPath(ex.getPath());
 
@@ -304,6 +294,21 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(IOException.class)
+    public ResponseEntity<?> handleEntityNotFound(IOException ex,
+                                                  WebRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ProblemType problemType = ProblemType.INCOMPREHENSIBLE_MESSAGE;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
     @ExceptionHandler(EntityInUseException.class)
     public ResponseEntity<?> handleEntityInUse(EntityInUseException ex, WebRequest request) {
 
@@ -332,14 +337,28 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
-    @ExceptionHandler(Exception.class)
+    @ExceptionHandler(ReferencedEntityNotFoundException.class)
+    public ResponseEntity<?> handleBusiness(ReferencedEntityNotFoundException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ProblemType problemType = ProblemType.REFERENCED_RESOURCE_NOT_FOUND;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @Override
     protected ResponseEntity<Object> handleExceptionInternal(Exception ex, Object body, HttpHeaders headers,
-                                                             HttpStatus status, WebRequest request) {
+                                                             HttpStatusCode status, WebRequest request) {
 
         if (body == null) {
             body = Problem.builder()
                     .timestamp(OffsetDateTime.now())
-                    .title(status.getReasonPhrase())
+                    .title(((HttpStatus) status).getReasonPhrase())
                     .status(status.value())
                     .userMessage(GENERIC_ERROR_MESSAGE_TO_END_USER)
                     .build();
@@ -367,7 +386,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return super.handleExceptionInternal(ex, body, headers, status, request);
     }
 
-    private Problem.ProblemBuilder createProblemBuilder(HttpStatus status,
+    private Problem.ProblemBuilder createProblemBuilder(HttpStatusCode status,
                                                         ProblemType problemType, String detail) {
 
         return Problem.builder()
