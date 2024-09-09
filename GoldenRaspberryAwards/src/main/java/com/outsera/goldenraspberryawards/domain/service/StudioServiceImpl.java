@@ -67,7 +67,7 @@ public class StudioServiceImpl extends AbstractService implements StudioService 
     @Transactional
     public void delete(Long id) {
 
-        SysEntity entity = studioRepository.findById(id).orElse(null);
+        SysEntity entity = findById(id);
         try {
             studioRepository.deleteById(id);
             studioRepository.flush();

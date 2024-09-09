@@ -16,6 +16,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 public class MovieAwardServiceImpl extends AbstractService implements MovieAwardService {
 
@@ -29,6 +31,14 @@ public class MovieAwardServiceImpl extends AbstractService implements MovieAward
     @Override
     @Transactional
     public MovieAward save(MovieAward movieAward) {
+        MovieAward mv = (MovieAward) super.registerLog(movieAwardRepository.save(movieAward));
+        movieAwardRepository.detach(mv);
+        return findById(mv.getId());
+    }
+
+    @Transactional
+    @Override
+    public MovieAward update(MovieAward movieAward) {
         return (MovieAward) super.registerLog(movieAwardRepository.save(movieAward));
     }
 
@@ -51,10 +61,15 @@ public class MovieAwardServiceImpl extends AbstractService implements MovieAward
     }
 
     @Override
+    public List<MovieAward> findAll() {
+        return movieAwardRepository.findAllByOrderByAwardYearAsc();
+    }
+
+    @Override
     @Transactional
     public void delete(Long id) {
 
-        SysEntity entity = movieAwardRepository.findById(id).orElse(null);
+        SysEntity entity = findById(id);
         try {
             movieAwardRepository.deleteById(id);
             movieAwardRepository.flush();

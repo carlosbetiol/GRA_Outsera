@@ -67,7 +67,7 @@ public class ProducerServiceImpl extends AbstractService implements ProducerServ
     @Transactional
     public void delete(Long id) {
 
-        SysEntity entity = producerRepository.findById(id).orElse(null);
+        SysEntity entity = findById(id);
         try {
             producerRepository.deleteById(id);
             producerRepository.flush();

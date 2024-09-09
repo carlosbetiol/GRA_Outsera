@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,6 +34,7 @@ public class Permission extends AbstractEntity{
     @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "permission", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RolePermission> permissionRoles;
 

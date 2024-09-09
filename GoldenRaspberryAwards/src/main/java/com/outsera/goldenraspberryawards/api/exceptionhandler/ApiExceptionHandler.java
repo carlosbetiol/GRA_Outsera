@@ -7,10 +7,7 @@ import com.fasterxml.jackson.databind.exc.InvalidFormatException;
 import com.fasterxml.jackson.databind.exc.PropertyBindingException;
 import com.outsera.goldenraspberryawards.api.contextual.ContextualRequest;
 import com.outsera.goldenraspberryawards.core.internationalization.MessageSystem;
-import com.outsera.goldenraspberryawards.domain.exception.BusinessException;
-import com.outsera.goldenraspberryawards.domain.exception.EntityInUseException;
-import com.outsera.goldenraspberryawards.domain.exception.EntityNotFoundException;
-import com.outsera.goldenraspberryawards.domain.exception.SystemInvalidParameterException;
+import com.outsera.goldenraspberryawards.domain.exception.*;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.log4j.Log4j2;
@@ -331,6 +328,20 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ProblemType problemType = ProblemType.BUSINESS_ERROR;
+        String detail = ex.getMessage();
+
+        Problem problem = createProblemBuilder(status, problemType, detail)
+                .userMessage(detail)
+                .build();
+
+        return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
+    }
+
+    @ExceptionHandler(ReferencedEntityNotFoundException.class)
+    public ResponseEntity<?> handleBusiness(ReferencedEntityNotFoundException ex, WebRequest request) {
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+        ProblemType problemType = ProblemType.REFERENCED_RESOURCE_NOT_FOUND;
         String detail = ex.getMessage();
 
         Problem problem = createProblemBuilder(status, problemType, detail)

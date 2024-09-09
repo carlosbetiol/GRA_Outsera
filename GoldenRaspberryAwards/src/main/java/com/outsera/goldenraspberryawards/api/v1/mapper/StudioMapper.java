@@ -1,11 +1,11 @@
 package com.outsera.goldenraspberryawards.api.v1.mapper;
 
 import com.outsera.goldenraspberryawards.api.qualifier.MinimalResponseModel;
-import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
+import com.outsera.goldenraspberryawards.api.v1.model.request.StudioRequestDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.MovieResponseDTO;
-import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
+import com.outsera.goldenraspberryawards.api.v1.model.response.StudioResponseDTO;
 import com.outsera.goldenraspberryawards.domain.model.Movie;
-import com.outsera.goldenraspberryawards.domain.model.Producer;
+import com.outsera.goldenraspberryawards.domain.model.Studio;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -24,12 +24,14 @@ import static com.outsera.goldenraspberryawards.api.v1.mapper.MovieMapper.MOVIE_
                 ArrayList.class
         }
 )
-public interface ProducerMapper {
+public interface StudioMapper {
 
-    static ProducerMapper PRODUCER_MAPPER = Mappers.getMapper( ProducerMapper.class );
+    static StudioMapper STUDIO_MAPPER = Mappers.getMapper( StudioMapper.class );
 
+//    @Mapping(target = "movies.producers", ignore = true)
+//    @Mapping(target = "movies.studios", ignore = true)
     @Mapping(target = "movies", expression = "java( entity.getMovies() == null ? null : toResponseCollectionModelMovies(new ArrayList<>(entity.getMovies())) )")
-    ProducerResponseDTO toResponseModel(Producer entity);
+    StudioResponseDTO toResponseModel(Studio entity);
 
     default List<MovieResponseDTO> toResponseCollectionModelMovies(List<Movie> movies) {
         return MOVIE_MAPPER.toMinimalResponseCollectionModel(movies);
@@ -37,9 +39,9 @@ public interface ProducerMapper {
 
     @Mapping(target = "movies", ignore = true)
     @MinimalResponseModel
-    ProducerResponseDTO toMinimalResponseModel(Producer entity);
+    StudioResponseDTO toMinimalResponseModel(Studio entity);
 
-    default List<ProducerResponseDTO> toResponseCollectionModel(List<Producer> entities) {
+    default List<StudioResponseDTO> toResponseCollectionModel(List<Studio> entities) {
         return entities.stream()
                 .map(this::toMinimalResponseModel)
                 .toList();
@@ -47,9 +49,9 @@ public interface ProducerMapper {
 
     @Mapping(target = "createdAt", expression = "java(OffsetDateTime.now())")
     @Mapping(target = "updatedAt", expression = "java(OffsetDateTime.now())")
-    Producer toEntity(ProducerRequestDTO dto);
+    Studio toEntity(StudioRequestDTO dto);
 
     @Mapping(target = "updatedAt", expression = "java(OffsetDateTime.now())")
-    Producer mergeEntity(ProducerRequestDTO dto, @MappingTarget Producer entity);
+    Studio mergeEntity(StudioRequestDTO dto, @MappingTarget Studio entity);
 
 }

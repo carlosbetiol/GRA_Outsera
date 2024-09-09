@@ -5,6 +5,7 @@ import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public interface MovieService {
 
     Movie save(Movie movie);
+
+    Movie update(Movie movie);
 
     Movie saveLogLess(Movie movie);
 

@@ -61,6 +61,11 @@ public class MovieAwardRepositoryImpl implements MovieAwardRepositoryCustom {
 
     }
 
+    @Override
+    public void detach(MovieAward movieAward) {
+        entityManager.detach(movieAward);
+    }
+
     private Order[] toOrders(Sort sort, Root<MovieAward> root, CriteriaBuilder criteriaBuilder) {
         return sort.stream()
                 .map(order -> {

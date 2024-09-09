@@ -9,4 +9,5 @@ public interface MovieRepositoryCustom {
 
     Page<Movie> findAll(Specification<Movie> spec, Pageable pageable);
 
+    void detach(Movie movie);
 }

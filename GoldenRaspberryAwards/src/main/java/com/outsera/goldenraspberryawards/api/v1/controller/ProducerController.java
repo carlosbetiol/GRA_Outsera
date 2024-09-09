@@ -76,7 +76,7 @@ public class ProducerController implements ProducerControllerOpenApi {
                 .map(PRODUCER_MAPPER::toResponseModel).get();
     }
 
-    @CheckSecurity.Producers.CanEdit
+    @CheckSecurity.Producers.CanDelete
     @DeleteMapping(path = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @Override

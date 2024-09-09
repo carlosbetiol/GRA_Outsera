@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Movie extends AbstractEntity{
     @Column(name = "\"name\"", nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "\"movie_studio\"",
@@ -31,6 +33,7 @@ public class Movie extends AbstractEntity{
     )
     private Set<Studio> studios;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "\"movie_producer\"",
@@ -40,6 +43,7 @@ public class Movie extends AbstractEntity{
     )
     private Set<Producer> producers;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "movieWinner")
     private Set<MovieAward> movieAwards;
 

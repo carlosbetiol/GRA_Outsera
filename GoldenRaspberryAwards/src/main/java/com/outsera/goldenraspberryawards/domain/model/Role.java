@@ -37,9 +37,11 @@ public class Role extends AbstractEntity{
     @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "roles")
     private Set<User> users;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<RolePermission> rolePermissions;
 

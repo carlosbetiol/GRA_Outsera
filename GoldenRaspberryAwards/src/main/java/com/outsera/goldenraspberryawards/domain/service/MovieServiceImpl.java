@@ -5,7 +5,6 @@ import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.MovieCriter
 import com.outsera.goldenraspberryawards.domain.exception.EntityInUseException;
 import com.outsera.goldenraspberryawards.domain.exception.MovieNotFoundException;
 import com.outsera.goldenraspberryawards.domain.model.Movie;
-import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import com.outsera.goldenraspberryawards.domain.model.SysEntity;
 import com.outsera.goldenraspberryawards.domain.repository.MovieRepository;
 import com.outsera.goldenraspberryawards.domain.specification.MovieSpecification;
@@ -33,6 +32,14 @@ public class MovieServiceImpl extends AbstractService implements MovieService {
     @Override
     @Transactional
     public Movie save(Movie movie) {
+        Movie mv = (Movie) super.registerLog(movieRepository.save(movie));
+        movieRepository.detach(mv);
+        return findById(mv.getId());
+    }
+
+    @Transactional
+    @Override
+    public Movie update(Movie movie) {
         return (Movie) super.registerLog(movieRepository.save(movie));
     }
 
@@ -68,7 +75,7 @@ public class MovieServiceImpl extends AbstractService implements MovieService {
     @Transactional
     public void delete(Long id) {
 
-        SysEntity entity = movieRepository.findById(id).orElse(null);
+        SysEntity entity = findById(id);
         try {
             movieRepository.deleteById(id);
             movieRepository.flush();

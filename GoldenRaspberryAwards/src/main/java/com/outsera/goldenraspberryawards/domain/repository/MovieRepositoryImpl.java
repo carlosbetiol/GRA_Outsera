@@ -61,6 +61,11 @@ public class MovieRepositoryImpl implements MovieRepositoryCustom {
 
     }
 
+    @Override
+    public void detach(Movie movie) {
+        entityManager.detach(movie);
+    }
+
     private Order[] toOrders(Sort sort, Root<Movie> root, CriteriaBuilder criteriaBuilder) {
         return sort.stream()
                 .map(order -> {

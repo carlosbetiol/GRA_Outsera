@@ -21,6 +21,6 @@ public class MovieAwardRequestDTO extends GenericTrackableRequestDTO {
 
     @NotNull(message = "Movie is required")
     @Valid
-    private IdRequestDTO movie;
+    private IdRequestDTO movieWinner;
 
 }

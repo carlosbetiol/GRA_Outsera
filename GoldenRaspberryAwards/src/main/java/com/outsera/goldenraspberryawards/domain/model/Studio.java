@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +23,7 @@ public class Studio extends AbstractEntity{
     @Column(name = "\"name\"", nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "studios")
     private Set<Movie> movies;
 

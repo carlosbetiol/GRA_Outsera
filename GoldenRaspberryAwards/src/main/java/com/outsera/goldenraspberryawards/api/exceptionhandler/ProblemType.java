@@ -14,7 +14,8 @@ public enum ProblemType {
 	INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message", MessageSystem.getInstance().getLocalizedMessage("exception.incomprehensibleMessageTitle")),
 	RESOURCE_NOT_FOUND("/resource-not-found", MessageSystem.getInstance().getLocalizedMessage("exception.resourceNotFoundTitle")),
 	ENTITY_IN_USE("/entity-in-use", MessageSystem.getInstance().getLocalizedMessage("exception.entityInUseTitle")),
-	BUSINESS_ERROR("/business-error", MessageSystem.getInstance().getLocalizedMessage("exception.businessErrorTitle"));
+	BUSINESS_ERROR("/business-error", MessageSystem.getInstance().getLocalizedMessage("exception.businessErrorTitle")),
+	REFERENCED_RESOURCE_NOT_FOUND("/referenced-resource-not-found", MessageSystem.getInstance().getLocalizedMessage("exception.referencedResourceNotFoundTitle")),;
 
 	private String title;
 	private String uri;
