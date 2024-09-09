@@ -32,15 +32,15 @@ public class RoleSpecification {
             }
 
             if (criteria.getPermissionIdentifier() != null && !criteria.getPermissionIdentifier().isEmpty() ) {
-                predicates.add(builder.equal(permissionJoin.get("identifier"), criteria.getPermissionIdentifier()));
+                predicates.add(permissionJoin.get("identifier").in(criteria.getPermissionIdentifier()));
             }
 
             if (criteria.getUserId() != null && !criteria.getUserId().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("id"), criteria.getUserId()));
+                predicates.add(userJoin.get("id").in(criteria.getUserId()));
             }
 
             if (criteria.getUserEmail() != null && !criteria.getUserEmail().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("email"), criteria.getUserEmail()));
+                predicates.add(userJoin.get("email").in(criteria.getUserEmail()));
             }
 
             if (criteria.getSearch() != null && !criteria.getSearch().isEmpty()) {

@@ -2,6 +2,7 @@ package com.outsera.goldenraspberryawards.api.interceptors;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.outsera.goldenraspberryawards.api.contextual.ContextualRequest;
+import com.outsera.goldenraspberryawards.domain.enums.SyslogActionEnum;
 import com.outsera.goldenraspberryawards.domain.model.RequestLog;
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -51,7 +52,7 @@ public class RequestLoggingFilter implements Filter {
         RequestLog requestLog = new RequestLog();
         requestLog.setRequestUUID(contextualRequest.getRequestUUID());
         requestLog.setRequestTime(OffsetDateTime.now());
-        requestLog.setMethod(httpRequest.getMethod());
+        requestLog.setMethod(SyslogActionEnum.toEnum(httpRequest.getMethod()));
         requestLog.setApiUrl(httpRequest.getRequestURI());
         requestLog.setRequestParameters(httpRequest.getQueryString());
         requestLog.setRequestHeaders(toJsonObject(headersMap));

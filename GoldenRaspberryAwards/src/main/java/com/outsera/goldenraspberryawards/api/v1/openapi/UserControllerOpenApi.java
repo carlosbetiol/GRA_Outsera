@@ -54,13 +54,4 @@ public interface UserControllerOpenApi {
     })
     public UserResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
-    @Operation(summary = "Find resource by email", security = @SecurityRequirement(name="userScheme"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = UserResponseDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Problem.class))})
-    })
-    public UserResponseDTO getResource(@Parameter(description = "Resource email") String email);
-
 }

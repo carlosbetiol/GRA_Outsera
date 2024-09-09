@@ -2,6 +2,7 @@ package com.outsera.goldenraspberryawards.domain.service;
 
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCriteria;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
+import com.outsera.goldenraspberryawards.domain.model.virtual.AwardBorder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -24,4 +25,5 @@ public interface ProducerService {
 
     void delete(Long id);
 
+    AwardBorder minMaxProducerWinners();
 }

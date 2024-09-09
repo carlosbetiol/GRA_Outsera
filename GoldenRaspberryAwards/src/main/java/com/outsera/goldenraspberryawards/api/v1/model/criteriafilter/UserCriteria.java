@@ -22,6 +22,10 @@ public class UserCriteria extends SearchCriteria {
     @Schema(example = "admin", description = "Role identifier")
     private List<String> roleIdentifier ;
 
+    @Schema(example = "admin@gra.com", description = "User email")
+    private List<String> email ;
+
+
     public void resolveMandatoryData() {
 
         if(isNull(status)) {

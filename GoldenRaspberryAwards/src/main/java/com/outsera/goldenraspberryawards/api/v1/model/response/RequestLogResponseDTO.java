@@ -20,7 +20,7 @@ public class RequestLogResponseDTO  {
     @Schema(example = "da39c608-905a-45df-8a9d-b6b0054a5e98")
     private String requestUUID;
 
-    @Schema(example = "POST")
+    @Schema(example = "CREATE")
     private SyslogActionEnum method;
 
     @Schema(example = "/v1/producer")

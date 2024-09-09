@@ -32,7 +32,6 @@ public interface MovieAwardMapper {
     @Mapping(target = "movieWinner", expression = "java( entity.getMovieWinner() == null ? null : toResponseModelMovie(entity.getMovieWinner()) )")
     MovieAwardResponseDTO toResponseModel(MovieAward entity);
 
-    @Mapping(target = "movieWinner", ignore = true)
     @MinimalResponseModel
     MovieAwardResponseDTO toMinimalResponseModel(MovieAward entity);
 
@@ -50,7 +49,7 @@ public interface MovieAwardMapper {
     }
 
     default MovieResponseDTO toResponseModelMovie(Movie movie) {
-        return MOVIE_MAPPER.toMinimalResponseModel(movie);
+        return MOVIE_MAPPER.toMediumResponseModel(movie);
     }
 
     @Mapping(target = "createdAt", expression = "java(OffsetDateTime.now())")

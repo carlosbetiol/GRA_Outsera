@@ -36,6 +36,11 @@ public interface MovieMapper {
     @Mapping(target = "studios", expression = "java( entity.getStudios() == null ? null : toResponseCollectionModelStudios(new ArrayList<>(entity.getStudios())) )")
     MovieResponseDTO toResponseModel(Movie entity);
 
+    @Mapping(target = "producers", expression = "java( entity.getProducers() == null ? null : toResponseCollectionModelProducers(new ArrayList<>(entity.getProducers())) )")
+    @Mapping(target = "studios", expression = "java( entity.getStudios() == null ? null : toResponseCollectionModelStudios(new ArrayList<>(entity.getStudios())) )")
+    @Mapping(target = "awards", ignore = true)
+    MovieResponseDTO toMediumResponseModel(Movie entity);
+
     @Mapping(target = "studios", ignore = true)
     @Mapping(target = "producers", ignore = true)
     @MinimalResponseModel
@@ -72,5 +77,6 @@ public interface MovieMapper {
 
     @Mapping(target = "updatedAt", expression = "java(OffsetDateTime.now())")
     Movie mergeEntity(MovieRequestDTO dto, @MappingTarget Movie entity);
+
 
 }

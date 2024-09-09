@@ -24,16 +24,20 @@ public class PermissionSpecification {
             Join<RolePermission, Role> roleJoin = permissionRolesJoin.join("role", JoinType.LEFT);
             Join<Role, User> userJoin = roleJoin.join("users", JoinType.LEFT);
 
+            if (criteria.getPermissionIdentifier() != null && !criteria.getPermissionIdentifier().isEmpty() ) {
+                predicates.add(root.get("identifier").in(criteria.getPermissionIdentifier()));
+            }
+
             if (criteria.getRoleIdentifier() != null && !criteria.getRoleIdentifier().isEmpty() ) {
-                predicates.add(builder.equal(roleJoin.get("identifier"), criteria.getRoleIdentifier()));
+                predicates.add(roleJoin.get("identifier").in(criteria.getRoleIdentifier()));
             }
 
             if (criteria.getUserId() != null && !criteria.getUserId().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("id"), criteria.getUserId()));
+                predicates.add(userJoin.get("id").in(criteria.getUserId()));
             }
 
             if (criteria.getUserEmail() != null && !criteria.getUserEmail().isEmpty() ) {
-                predicates.add(builder.equal(userJoin.get("email"), criteria.getUserEmail()));
+                predicates.add(userJoin.get("email").in(criteria.getUserEmail()));
             }
 
             if (criteria.getSearch() != null && !criteria.getSearch().isEmpty()) {

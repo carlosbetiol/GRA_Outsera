@@ -1,5 +1,7 @@
 package com.outsera.goldenraspberryawards.domain.repository;
 
+import com.outsera.goldenraspberryawards.domain.model.Movie;
+import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -12,7 +14,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProducerRepositoryImpl implements ProducerRepositoryCustom {
@@ -72,6 +75,50 @@ public class ProducerRepositoryImpl implements ProducerRepositoryCustom {
                 })
                 .toArray(Order[]::new);
     }
+
+    @Override
+    public Map<String, List<Integer>> findProducersAwardedYears() {
+
+        CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Producer> criteriaQuery = criteriaBuilder.createQuery(Producer.class);
+        Root<Producer> root = criteriaQuery.from(Producer.class);
+        Fetch<Producer, Movie> fetchMovie = root.fetch("movies", JoinType.INNER);
+        fetchMovie.fetch("movieAwards", JoinType.INNER);
+
+        criteriaQuery.distinct(true);
+
+        TypedQuery<Producer> typedQuery = entityManager.createQuery(criteriaQuery);
+
+        List<Producer> content = typedQuery.getResultList();
+
+        Map<String, Set<Integer>> producerYearsMap = new HashMap<>();
+
+        content.forEach(producer -> {
+            producerYearsMap.compute(producer.getName(), (k, v) -> {
+                Set<Integer> years = producer.getMovies().stream()
+                        .map(Movie::getMovieAwards)
+                        .flatMap(Set::stream)
+                        .map(MovieAward::getAwardYear)
+                        .collect(Collectors.toSet());
+
+                if (v == null) {
+                    return years;
+                } else {
+                    v.addAll(years);
+                    return v;
+                }
+            });
+        });
+
+        return producerYearsMap.entrySet().stream()
+                .collect(Collectors.toMap(Map.Entry::getKey, e -> {
+                    List<Integer> years = new ArrayList<>(e.getValue());
+                    years.sort(Comparator.naturalOrder());
+                    return years;
+                }));
+
+    }
+
 
 }
 

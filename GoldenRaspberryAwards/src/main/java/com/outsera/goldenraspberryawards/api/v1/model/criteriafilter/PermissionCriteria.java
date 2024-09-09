@@ -12,6 +12,9 @@ import java.util.List;
 @Accessors(chain = true)
 public class PermissionCriteria extends SearchCriteria {
 
+    @Schema(example = "PRC_VIEW", description = "View producer")
+    private List<String> permissionIdentifier;
+
     @Schema(example = "admin", description = "Role identifier")
     private List<String> roleIdentifier;
 

@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
 import com.outsera.goldenraspberryawards.core.jackson.JsonObjectToJsonStringConverter;
+import com.outsera.goldenraspberryawards.domain.enums.SyslogActionEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -29,7 +30,8 @@ public class RequestLog extends AbstractEntity {
     private User user;
 
     @Column(name="\"method\"", nullable = false)
-    private String method;
+    @Enumerated(EnumType.STRING)
+    private SyslogActionEnum method;
 
     @Column(name="\"api_url\"", nullable = false)
     private String apiUrl;

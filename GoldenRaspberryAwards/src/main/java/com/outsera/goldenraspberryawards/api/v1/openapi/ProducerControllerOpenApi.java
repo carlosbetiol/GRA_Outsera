@@ -3,6 +3,7 @@ package com.outsera.goldenraspberryawards.api.v1.openapi;
 import com.outsera.goldenraspberryawards.api.exceptionhandler.Problem;
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
+import com.outsera.goldenraspberryawards.api.v1.model.response.AwardBorderResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.model.PagedProducerResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -66,6 +67,14 @@ public interface ProducerControllerOpenApi {
     })
     public ProducerResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
+    @Operation(summary = "Get top producers", security = @SecurityRequirement(name = "userScheme"))
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Resources list (empty if no resources found)",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AwardBorderResponseDTO.class)))
+    })
+    public AwardBorderResponseDTO getTopProducers();
+
     @Operation(summary = "Add resource", security = @SecurityRequirement(name="userScheme"))
     @ApiResponse(responseCode = "201", description = "Resource successfully added", content = {@Content(mediaType = "application/json",
             schema = @Schema(implementation = ProducerResponseDTO.class))
@@ -89,5 +98,6 @@ public interface ProducerControllerOpenApi {
                     schema = @Schema(implementation = Problem.class))})
     })
     public ResponseEntity<Void> removeResource(@Parameter(description = "Resource Id") Long id);
+
 
 }

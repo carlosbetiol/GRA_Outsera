@@ -2,10 +2,12 @@ package com.outsera.goldenraspberryawards.api.v1.mapper;
 
 import com.outsera.goldenraspberryawards.api.qualifier.MinimalResponseModel;
 import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
+import com.outsera.goldenraspberryawards.api.v1.model.response.AwardBorderResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.MovieResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
+import com.outsera.goldenraspberryawards.domain.model.virtual.AwardBorder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -27,6 +29,8 @@ import static com.outsera.goldenraspberryawards.api.v1.mapper.MovieMapper.MOVIE_
 public interface ProducerMapper {
 
     static ProducerMapper PRODUCER_MAPPER = Mappers.getMapper( ProducerMapper.class );
+
+    AwardBorderResponseDTO toResponseModel(AwardBorder entity);
 
     @Mapping(target = "movies", expression = "java( entity.getMovies() == null ? null : toResponseCollectionModelMovies(new ArrayList<>(entity.getMovies())) )")
     ProducerResponseDTO toResponseModel(Producer entity);

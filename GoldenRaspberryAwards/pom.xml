@@ -129,6 +129,11 @@
 			<version>${apache-commons.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-text</artifactId>
+			<version>${apache-commons.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.cloud.tools</groupId>
 			<artifactId>jib-maven-plugin</artifactId>
 			<version>${jib-version}</version>

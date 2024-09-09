@@ -89,7 +89,7 @@ public class ContextualRequestImpl implements ContextualRequest {
 
         SyslogActionEnum action = null;
         if (requestLog != null && requestLog.getMethod() != null) {
-            action = SyslogActionEnum.toEnum(requestLog.getMethod());
+            action = requestLog.getMethod();
         }
 
         eventPublisher.publishEvent(new PersistenceLogRegisterEvent(

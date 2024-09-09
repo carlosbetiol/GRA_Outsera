@@ -2,6 +2,7 @@ package com.outsera.goldenraspberryawards.api.v1.controller;
 
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCriteria;
 import com.outsera.goldenraspberryawards.api.v1.model.request.ProducerRequestDTO;
+import com.outsera.goldenraspberryawards.api.v1.model.response.AwardBorderResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.model.response.ProducerResponseDTO;
 import com.outsera.goldenraspberryawards.api.v1.openapi.ProducerControllerOpenApi;
 import com.outsera.goldenraspberryawards.core.security.CheckSecurity;
@@ -55,6 +56,14 @@ public class ProducerController implements ProducerControllerOpenApi {
     @Override
     public ProducerResponseDTO getResource(@PathVariable(name = "id") Long id) {
         return PRODUCER_MAPPER.toResponseModel(producerService.findById(id));
+    }
+
+    @CheckSecurity.Producers.CanView
+    @GetMapping(path = "/reports/top", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.OK)
+    @Override
+    public AwardBorderResponseDTO getTopProducers() {
+        return PRODUCER_MAPPER.toResponseModel(producerService.minMaxProducerWinners());
     }
 
     @CheckSecurity.Producers.CanInsert

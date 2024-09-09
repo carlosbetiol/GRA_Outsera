@@ -54,13 +54,4 @@ public interface RoleControllerOpenApi {
     })
     public RoleResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
-    @Operation(summary = "Find resource by identifier", security = @SecurityRequirement(name="userScheme"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = RoleResponseDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Problem.class))})
-    })
-    public RoleResponseDTO getResource(@Parameter(description = "Resource identifier") String identifier);
-
 }

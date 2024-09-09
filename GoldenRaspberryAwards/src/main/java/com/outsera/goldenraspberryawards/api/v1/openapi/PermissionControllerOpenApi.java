@@ -54,13 +54,4 @@ public interface PermissionControllerOpenApi {
     })
     public PermissionResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
-    @Operation(summary = "Find resource by identifier", security = @SecurityRequirement(name="userScheme"))
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Resource found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = PermissionResponseDTO.class))}),
-            @ApiResponse(responseCode = "404", description = "Resource not found", content = {@Content(mediaType = "application/json",
-                    schema = @Schema(implementation = Problem.class))})
-    })
-    public PermissionResponseDTO getResource(@Parameter(description = "Resource identifier") String identifier);
-
 }
