@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+    <title>Awards</title>
+    <link rel="icon" type="image/x-icon" href="/assets/images/logo/favicon.ico" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+    <link href="https://unpkg.com/aos@2.3.0/dist/aos.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/assets/css/app.css" />
+    <script src="/assets/js/settings.js" sync></script>
+</head>
+
+<body class="font-inter skin-default">
+    <!-- [if IE]> <p class="browserupgrade">
+            You are using an <strong>outdated</strong> browser. Please
+            <a href="https://browsehappy.com/">upgrade your browser</a> to improve
+            your experience and security.
+        </p> <![endif] -->
+
+    <!--/* <div class="loginwrapper bg-cover bg-no-repeat bg-center" style="background-image: url(/assets/images/page-bg.png)"> */-->
+    <div class="loginwrapper bg-cover bg-no-repeat bg-center" style="background: rgb(0, 41, 105)">
+        <div class="lg-inner-column">
+            <div class="left-columns lg:w-1/2 lg:block hidden">
+                <div class="logo-box-3">
+                    <a heref="index.html" class="">
+                        <img src="/assets/images/logo/gra-logo.png" alt="logo" />
+                    </a>
+                </div>
+            </div>
+            <div class="lg:w-1/2 w-full flex flex-col items-center justify-center">
+                <div class="auth-box-3">
+                    <div class="mobile-logo text-center lg:hidden block">
+                        <a heref="index.html" class="flex justify-center">
+                            <img src="/assets/images/logo/gra-logo.png" alt="" class="mb-10 dark_logo" />
+                            <img src="/assets/images/logo/gra-logo.png" alt="" class="mb-10 white_logo" />
+                        </a>
+                    </div>
+                    <div class="text-center 2xl:mb-10 mb-5">
+                        <a heref="index.html" class="flex justify-center pb-2">
+                            <img src="/assets/images/logo/outsera.png" alt="logo-outsera" width="320px" />
+                        </a>
+<!--                        <h4 class="font-medium uppercase">Redefinir Senha</h4>-->
+                        <div class="text-slate-500 dark:text-slate-400 text-base">
+                            Put your credentials to <b>reset the password</b>
+                        </div>
+                    </div>
+                    <form class="space-y-4" th:action="@{/redefinir-senha}" method="post">
+
+<!--                        <div class="alert alert-danger light-mode" th:if="${session.redefinePasswordMessage}">-->
+<!--                            <span th:text="${session.redefinePasswordMessage}"></span>-->
+<!--                        </div>-->
+
+                        <div class="alert alert-danger light-mode" th:if="${message}">
+                            <span th:text="${message}"></span>
+                        </div>
+
+                        <div class="fromGroup">
+                            <label class="block form-label">Email</label>
+                            <div class="relative">
+                                <input type="text" name="email" class="form-control py-2"
+                                    placeholder="insert your email" autofocus />
+                            </div>
+                        </div>
+                        <div class="mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-6 text-sm text-center">
+                            A password reset link will be sent to the provided email address.
+                        </div>
+                        <button class="btn btn-dark block w-full text-center" type="submit">
+                            Send
+                        </button>
+                        <div class="mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-6 text-sm text-center">
+                            <a class="text-sm text-slate-800 dark:text-slate-400 leading-6 font-medium"
+                               th:href="@{${frontUrl} + '/logout'}">
+                                Back to login
+                            </a>
+                        </div>
+                    </form>
+                    <div class="relative border-b-[#9AA2AF] border-opacity-[16%] border-b pt-6">
+                    </div>
+<!--                    <div-->
+<!--                        class="mx-auto font-normal text-slate-500 dark:text-slate-400 2xl:mt-12 mt-6 text-sm text-center">-->
+<!--                        Não tem conta? Contate o administrador da sua unidade.-->
+<!--                    </div>-->
+                </div>
+            </div>
+            <div class="auth-footer3 text-white py-5 px-5 text-base w-full">
+                @Outsera - All rights reserved
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

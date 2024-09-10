@@ -1,13 +1,17 @@
 package com.outsera.goldenraspberryawards;
 
+import com.outsera.goldenraspberryawards.core.database.DatabaseProperties;
 import com.outsera.goldenraspberryawards.core.io.Base64ProtocolResolver;
+import com.outsera.goldenraspberryawards.core.security.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 
 import java.util.TimeZone;
 
 @SpringBootApplication
+@EnableConfigurationProperties( {SecurityProperties.class, DatabaseProperties.class} )
 public class GoldenRaspberryAwardsApplication {
 
 	private static ApplicationContext APPLICATION_CONTEXT;

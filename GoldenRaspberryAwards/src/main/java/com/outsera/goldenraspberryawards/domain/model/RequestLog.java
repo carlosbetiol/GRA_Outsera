@@ -1,6 +1,7 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
 import com.outsera.goldenraspberryawards.core.jackson.JsonObjectToJsonStringConverter;
+import com.outsera.goldenraspberryawards.domain.enums.SyslogActionEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import org.springframework.boot.configurationprocessor.json.JSONObject;
 import java.time.OffsetDateTime;
 
 @Entity
-@Table(name = "request_log")
+@Table(name = "\"request_log\"")
 @Getter
 @Setter
 @Accessors(chain = true)
@@ -18,56 +19,58 @@ public class RequestLog extends AbstractEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(name="request_uuid", nullable = false)
+    @Column(name="\"request_uuid\"", nullable = false)
     private String requestUUID;
 
     @ManyToOne
-    @JoinColumn(name = "id", nullable = false)
+    @JoinColumn(name = "\"user_id\"", nullable = false)
     private User user;
 
-    @Column(name="method", nullable = false)
-    private String method;
+    @Column(name="\"method\"", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private SyslogActionEnum method;
 
-    @Column(name="api_url", nullable = false)
+    @Column(name="\"api_url\"", nullable = false)
     private String apiUrl;
 
-    @Column(name="request_parameters", nullable = true)
+    @Column(name="\"request_parameters\"", nullable = true)
     private String requestParameters;
 
-    @Column(name="request_headers", columnDefinition = "json", nullable = true)
+    @Column(name="\"request_headers\"", columnDefinition = "json", nullable = true)
     @Convert(converter = JsonObjectToJsonStringConverter.class)
     private JSONObject requestHeaders;
 
-    @Column(name="request_dto", nullable = true)
+    @Column(name="\"request_dto\"", nullable = true)
     private String requestDto;
 
-    @Column(name="request_content", columnDefinition = "json", nullable = true)
+    @Column(name="\"request_content\"", columnDefinition = "json", nullable = true)
     @Convert(converter = JsonObjectToJsonStringConverter.class)
     private JSONObject requestContent;
 
-    @Column(name="request_time", nullable = false)
+    @Column(name="\"request_time\"", nullable = false)
     private OffsetDateTime requestTime;
 
-    @Column(name="response_status", nullable = true)
+    @Column(name="\"response_status\"", nullable = true)
     private Integer responseStatus;
 
-    @Column(name="response_headers", columnDefinition = "json", nullable = true)
+    @Column(name="\"response_headers\"", columnDefinition = "json", nullable = true)
     @Convert(converter = JsonObjectToJsonStringConverter.class)
     private JSONObject responseHeaders;
 
-    @Column(name="response_dto", nullable = true)
+    @Column(name="\"response_dto\"", nullable = true)
     private String responseDto;
 
-    @Column(name="response_content", columnDefinition = "json", nullable = true)
+    @Column(name="\"response_content\"", columnDefinition = "json", nullable = true)
     @Convert(converter = JsonObjectToJsonStringConverter.class)
     private JSONObject responseContent;
 
-    @Column(name="response_time", nullable = false)
+    @Column(name="\"response_time\"", nullable = false)
     private OffsetDateTime responseTime;
 
-    @Column(name="created_at", nullable = false)
+    @Column(name="\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
     @Override

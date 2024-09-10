@@ -1,0 +1,8 @@
+{
+  "name": "<PACKAGE_NAME>",
+  "date": "<DEPLOY_DATE>",
+  "version": "<PACKAGE_VERSION>",
+  "commit": "<GITHUB_SHA>",
+  "short_commit": "<GITHUB_SHA_SHORT>",
+  "image": "<IMAGE_VERSION>"
+}

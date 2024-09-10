@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,38 +10,47 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "movie")
+@Table(name = "\"movie\"")
 @Getter
 @Setter
 public class Movie extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "movie_studio",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "studio_id")
+            name = "\"movie_studio\"",
+            joinColumns = @JoinColumn(name = "\"movie_id\""),
+            inverseJoinColumns = @JoinColumn(name = "\"studio_id\""),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"\"movie_id\"", "\"studio_id\""})
     )
     private Set<Studio> studios;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
-            name = "movie_producer",
-            joinColumns = @JoinColumn(name = "movie_id"),
-            inverseJoinColumns = @JoinColumn(name = "producer_id")
+            name = "\"movie_producer\"",
+            joinColumns = @JoinColumn(name = "\"movie_id\""),
+            inverseJoinColumns = @JoinColumn(name = "\"producer_id\""),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"\"movie_id\"", "\"producer_id\""})
     )
     private Set<Producer> producers;
 
-    @Column(name = "created_at", nullable = false)
+    @JsonIgnore
+    @OneToMany(mappedBy = "movieWinner")
+    private Set<MovieAward> movieAwards;
+
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @Override

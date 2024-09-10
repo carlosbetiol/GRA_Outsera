@@ -1,29 +1,36 @@
 package com.outsera.goldenraspberryawards.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
-@Table(name = "studio")
+@Table(name = "\"studio\"")
 @Getter
 @Setter
 public class Studio extends AbstractEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "\"id\"")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(name = "\"name\"", nullable = false)
     private String name;
 
-    @Column(name = "created_at", nullable = false)
+    @JsonIgnore
+    @ManyToMany(mappedBy = "studios")
+    private Set<Movie> movies;
+
+    @Column(name = "\"created_at\"", nullable = false)
     private OffsetDateTime createdAt;
 
-    @Column(name = "updated_at", nullable = false)
+    @Column(name = "\"updated_at\"", nullable = false)
     private OffsetDateTime updatedAt;
 
     @Override
