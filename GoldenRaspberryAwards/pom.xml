@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.outsera</groupId>
 	<artifactId>golden-raspberry-awards</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>outsera-gra-api</name>
 	<description>golden-raspberry-awards</description>
 	<url/>
