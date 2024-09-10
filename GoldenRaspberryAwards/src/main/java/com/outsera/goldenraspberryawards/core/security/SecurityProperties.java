@@ -86,17 +86,9 @@ public class SecurityProperties {
         public class ClientCredentials {
 
             private ClientCredential frontweb = new ClientCredential();
-            private ClientCredential integration = new ClientCredential();
 
             public ClientCredential getFrontweb() {
                 return frontweb;
-            }
-            public ClientCredential getIntegration() {
-                return integration;
-            }
-
-            public void setIntegration(ClientCredential integration) {
-                this.integration = integration;
             }
 
             public void setFrontweb(ClientCredential frontweb) {
