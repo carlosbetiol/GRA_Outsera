@@ -24,7 +24,8 @@ import java.util.UUID;
 //@Component
 @Log4j2
 @Profile({"dev", "prod"})
-public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
+public class Oauth2ClientInitializer  {
+//    public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
     private final SecurityProperties securityProperties;
 
@@ -40,14 +41,14 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
         this.environment = environment;
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-
-        log.info("Initializing Oauth2 Clients");
-        createOrUpdateFrontWebOauth2Client();
-        createOrUpdateIntegrationbOauth2Client();
-
-    }
+//    @Override
+//    public void onApplicationEvent(ApplicationReadyEvent event) {
+//
+//        log.info("Initializing Oauth2 Clients");
+//        createOrUpdateFrontWebOauth2Client();
+////        createOrUpdateIntegrationbOauth2Client();
+//
+//    }
 
     private void createOrUpdateFrontWebOauth2Client() {
 
@@ -113,35 +114,35 @@ public class Oauth2ClientInitializer implements ApplicationListener<ApplicationR
 
     }
 
-    private void createOrUpdateIntegrationbOauth2Client() {
-
-        String clientId = Optional.ofNullable(registeredClientRepository.findByClientId(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId()))
-                .map(RegisteredClient::getId)
-                .orElse( UUID.randomUUID().toString() );
-
-        RegisteredClient registeredClient = RegisteredClient.withId(clientId)
-                .clientId(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId())
-                .clientSecret(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientPassword())
-                .clientName(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId())
-                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
-                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
-                .scope("INTEGRATION")
-                .tokenSettings(TokenSettings.builder()
-                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
-                        .accessTokenTimeToLive(Duration.ofMinutes(60))
-                        .build())
-                .clientSettings(ClientSettings.builder()
-                        .requireAuthorizationConsent(false)
-                        .requireProofKey(false)
-                        .build())
-                .clientIdIssuedAt(OffsetDateTime.now().toInstant())
-                .clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
-                .postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
-                .build();
-
-        registeredClientRepository.save(registeredClient);
-
-    }
-
+//    private void createOrUpdateIntegrationbOauth2Client() {
+//
+//        String clientId = Optional.ofNullable(registeredClientRepository.findByClientId(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId()))
+//                .map(RegisteredClient::getId)
+//                .orElse( UUID.randomUUID().toString() );
+//
+//        RegisteredClient registeredClient = RegisteredClient.withId(clientId)
+//                .clientId(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId())
+//                .clientSecret(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientPassword())
+//                .clientName(securityProperties.getSecurity().getClientCredentials().getIntegration().getClientId())
+//                .clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+//                .authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+//                .scope("INTEGRATION")
+//                .tokenSettings(TokenSettings.builder()
+//                        .accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+//                        .accessTokenTimeToLive(Duration.ofMinutes(60))
+//                        .build())
+//                .clientSettings(ClientSettings.builder()
+//                        .requireAuthorizationConsent(false)
+//                        .requireProofKey(false)
+//                        .build())
+//                .clientIdIssuedAt(OffsetDateTime.now().toInstant())
+//                .clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+//                .postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
+//                .build();
+//
+//        registeredClientRepository.save(registeredClient);
+//
+//    }
+//
 
 }
