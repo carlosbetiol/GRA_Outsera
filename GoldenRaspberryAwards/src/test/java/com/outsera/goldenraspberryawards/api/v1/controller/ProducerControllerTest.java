@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.yml")
 @ActiveProfiles( "test")
-public class ProducerControllerIT {
+public class ProducerControllerTest {
 
     @Autowired
     private MockMvc mockMvc;

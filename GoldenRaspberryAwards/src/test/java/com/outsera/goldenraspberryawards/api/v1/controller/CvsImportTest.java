@@ -22,7 +22,7 @@ import java.util.List;
 @AutoConfigureMockMvc
 @TestPropertySource("/application-test.yml")
 @ActiveProfiles( "test")
-public class CvsImportIT {
+public class CvsImportTest {
 
     @Autowired
     private MockMvc mockMvc;

@@ -15,6 +15,7 @@ logging:
 #    org.springframework: DEBUG
 #    org.springframework.boot.autoconfigure: DEBUG
     spring.data.h2: DEBUG
+    org.flywaydb: INFO
 
 spring:
   jpa:
@@ -36,10 +37,10 @@ awardsapi:
   database:
     host: 192.168.177.2
     port: 3306
-    dbname: supriodonto_dev
+    dbname: todo
     username: root
     password: 123456
-    csv-file-path: movielist-test.csv
+    csv-file-path: movielist.csv
 
   jwt:
     keystore:
@@ -47,15 +48,13 @@ awardsapi:
       keypair-alias: pedidosapi-dev
       password: e1ffHourhjhnsfscvrdxaiax8rxaedbkDdmnqdfv
   security:
-    admin-email-address: admin@supriodonto.com.br
+    admin-email-address: admin@gra.com
     admin-init-password: $2a$12$BxTwwC/MknckK4locjeYFujlLOkRuWg33vZTYOEevsJ5B3Ox7ql2m
-    allowed-redirects: http://supriodonto.local:8080/swagger-ui/oauth2-redirect.html,http://supriodonto.local:8080/login/oauth2/code/messaging-client-oidc,http://supriodonto.local:8080/authorized,https://oidcdebugger.com/debug,http://localhost:8080/swagger-ui/oauth2-redirect.html,http://localhost:8080/login/oauth2/code/messaging-client-oidc,http://localhost:8080/authorized,http://localhost:3000/oauth2-redirect.html,http://supriodonto.local:8090/callback
-    auth-server-url: http://supriodonto.local:8080
+    allowed-redirects: http://host.local:8080/swagger-ui/oauth2-redirect.html,http://host.local:8080/login/oauth2/code/messaging-client-oidc,http://host.local:8080/authorized,https://oidcdebugger.com/debug,http://localhost:8080/swagger-ui/oauth2-redirect.html,http://localhost:8080/login/oauth2/code/messaging-client-oidc,http://localhost:8080/authorized,http://localhost:3000/oauth2-redirect.html,http://host.local:8090/callback
+    auth-server-url: http://host.local:8080
     client-credentials:
       frontweb:
         client-id: frontweb
         client-password: $2a$12$BxTwwC/MknckK4locjeYFujlLOkRuWg33vZTYOEevsJ5B3Ox7ql2m
-      integration:
-        client-id: sest-api
-        client-password: $2a$12$k0/KOMcvSakP3gBfWg8T/uY1SuDT/UKpYoF1qbQ9EZsn8o/070Emi
     origin-allowed: http://localhost:3000,https://d841-177-87-108-3.sa.ngrok.io
+
