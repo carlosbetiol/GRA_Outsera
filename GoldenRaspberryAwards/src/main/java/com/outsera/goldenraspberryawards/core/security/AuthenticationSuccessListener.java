@@ -20,11 +20,13 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
 
     private final ContextualRequest contextualRequest;
     private final HttpServletResponse response;
+    private final SecurityRules securityRules;
 
 
-    public AuthenticationSuccessListener(ContextualRequest contextualRequest, HttpServletResponse response) {
+    public AuthenticationSuccessListener(ContextualRequest contextualRequest, HttpServletResponse response, SecurityRules securityRules) {
         this.contextualRequest = contextualRequest;
         this.response = response;
+        this.securityRules = securityRules;
     }
 
     @Override
@@ -32,7 +34,10 @@ public class AuthenticationSuccessListener implements ApplicationListener<Authen
 
         if (contextualRequest.getRequestLog().isPresent()) {
 
-            Long userId = ((UserPrincipal) event.getAuthentication().getPrincipal()).getUserId();
+            // todo: verify it because the new version returns string
+//            Long userId = ((UserPrincipal) event.getAuthentication().getPrincipal()).getUserId();
+
+            Long userId = 0L;
 
             RequestLog requestLog = contextualRequest.getRequestLog().get();
 

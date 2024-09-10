@@ -1,4 +1,4 @@
-package com.outsera.goldenraspberryawards.api.v1.controller;
+package com.outsera.goldenraspberryawards;
 
 import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;

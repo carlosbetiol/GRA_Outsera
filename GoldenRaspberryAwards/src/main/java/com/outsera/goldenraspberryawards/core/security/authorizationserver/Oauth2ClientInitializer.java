@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+//@Component
 @Log4j2
 @Profile({"dev", "prod"})
 public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {

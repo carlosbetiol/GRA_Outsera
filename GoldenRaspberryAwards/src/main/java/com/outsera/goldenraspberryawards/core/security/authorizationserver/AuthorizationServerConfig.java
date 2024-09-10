@@ -33,18 +33,27 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.core.env.Environment;
+import org.springframework.core.env.Profiles;
 import org.springframework.http.HttpStatus;
-import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import org.springframework.security.oauth2.server.authorization.InMemoryOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.authentication.OAuth2ClientAuthenticationToken;
+import org.springframework.security.oauth2.server.authorization.client.InMemoryRegisteredClientRepository;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
 import org.springframework.security.oauth2.server.authorization.client.RegisteredClientRepository;
 import org.springframework.security.oauth2.server.authorization.config.annotation.web.configurers.OAuth2AuthorizationServerConfigurer;
 import org.springframework.security.oauth2.server.authorization.settings.AuthorizationServerSettings;
+import org.springframework.security.oauth2.server.authorization.settings.ClientSettings;
+import org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat;
+import org.springframework.security.oauth2.server.authorization.settings.TokenSettings;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 import org.springframework.security.web.SecurityFilterChain;
@@ -57,11 +66,9 @@ import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Configuration(proxyBeanMethods = false)
 public class AuthorizationServerConfig {
@@ -144,14 +151,82 @@ public class AuthorizationServerConfig {
 
 	}
 
-	@Bean
-	public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
-		return new CustomJdbcRegisteredClientRepository(jdbcOperations);
-	}
+//	@Bean
+//	public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations) {
+//		return new JdbcRegisteredClientRepository(jdbcOperations);
+//	}
 
 	@Bean
-	public OAuth2AuthorizationService authorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
-		return new CustomJdbcOAuth2AuthorizationService( jdbcOperations, registeredClientRepository );
+	public RegisteredClientRepository registeredClientRepository(SecurityProperties securityProperties, Environment environment) {
+
+		String clientId = UUID.randomUUID().toString();
+
+		RegisteredClient registeredClient;
+
+		if (environment.acceptsProfiles(Profiles.of("dev")))
+			registeredClient = RegisteredClient.withId(clientId)
+					.clientId(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientId())
+					.clientSecret(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientPassword())
+					.clientName(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientId())
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+					.redirectUris(uris -> uris.addAll(securityProperties.getSecurity().getAllowedRedirects()))
+					.scope("READ")
+					.scope("WRITE")
+					.tokenSettings(TokenSettings.builder()
+							.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+							.accessTokenTimeToLive(Duration.ofDays(7))
+							.refreshTokenTimeToLive(Duration.ofDays(365))
+							.reuseRefreshTokens(false)
+							.build())
+					.clientSettings(ClientSettings.builder()
+							.requireAuthorizationConsent(false)
+							.requireProofKey(false)
+							.build())
+					.clientIdIssuedAt(OffsetDateTime.now().toInstant())
+					.clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+					.postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
+					.build();
+		else
+			registeredClient = RegisteredClient.withId(clientId)
+					.clientId(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientId())
+					.clientSecret(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientPassword())
+					.clientName(securityProperties.getSecurity().getClientCredentials().getFrontweb().getClientId())
+					.clientAuthenticationMethod(ClientAuthenticationMethod.CLIENT_SECRET_BASIC)
+					.authorizationGrantType(AuthorizationGrantType.CLIENT_CREDENTIALS)
+					.authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+					.authorizationGrantType(AuthorizationGrantType.REFRESH_TOKEN)
+					.redirectUris(uris -> uris.addAll(securityProperties.getSecurity().getAllowedRedirects()))
+					.scope("READ")
+					.scope("WRITE")
+					.tokenSettings(TokenSettings.builder()
+							.accessTokenFormat(OAuth2TokenFormat.SELF_CONTAINED)
+							.accessTokenTimeToLive(Duration.ofMinutes(60))
+							.refreshTokenTimeToLive(Duration.ofHours(3))
+							.reuseRefreshTokens(false)
+							.build())
+					.clientSettings(ClientSettings.builder()
+							.requireAuthorizationConsent(false)
+							.requireProofKey(false)
+							.build())
+					.clientIdIssuedAt(OffsetDateTime.now().toInstant())
+					.clientSecretExpiresAt(OffsetDateTime.now().plusYears(1).toInstant())
+					.postLogoutRedirectUri(securityProperties.getSecurity().getAuthServerUrl())
+					.build();
+
+		return new InMemoryRegisteredClientRepository(List.of(registeredClient));
+	}
+
+//	@Bean
+//	public OAuth2AuthorizationService authorizationService(JdbcOperations jdbcOperations, RegisteredClientRepository registeredClientRepository) {
+//		return new JdbcOAuth2AuthorizationService( jdbcOperations, registeredClientRepository );
+//	}
+
+	@Bean
+	public OAuth2AuthorizationService authorizationService() {
+		return new InMemoryOAuth2AuthorizationService();
 	}
 
 	@Bean
