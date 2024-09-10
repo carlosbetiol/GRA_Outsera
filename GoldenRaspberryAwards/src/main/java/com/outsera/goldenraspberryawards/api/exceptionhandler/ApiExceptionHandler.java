@@ -265,7 +265,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(SystemInvalidParameterException.class)
-    public ResponseEntity<?> handleSystemInvalidParameter(EntityNotFoundException ex,
+    public ResponseEntity<?> handleSystemInvalidParameter(SystemInvalidParameterException ex,
                                                           WebRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;

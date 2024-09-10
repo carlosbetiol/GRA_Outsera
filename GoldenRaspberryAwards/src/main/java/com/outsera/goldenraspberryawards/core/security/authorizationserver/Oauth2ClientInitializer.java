@@ -4,6 +4,7 @@ import com.outsera.goldenraspberryawards.core.security.SecurityProperties;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.Profiles;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
@@ -22,6 +23,7 @@ import java.util.UUID;
 
 @Component
 @Log4j2
+@Profile({"dev", "prod"})
 public class Oauth2ClientInitializer implements ApplicationListener<ApplicationReadyEvent> {
 
     private final SecurityProperties securityProperties;

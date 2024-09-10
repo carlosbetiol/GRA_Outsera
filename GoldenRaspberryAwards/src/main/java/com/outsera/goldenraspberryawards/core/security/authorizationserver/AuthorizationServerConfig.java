@@ -30,6 +30,7 @@ import com.outsera.goldenraspberryawards.domain.repository.PermissionRepository;
 import com.outsera.goldenraspberryawards.domain.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -154,6 +155,7 @@ public class AuthorizationServerConfig {
 	}
 
 	@Bean
+	@Profile({"dev", "prod"})
 	public JWKSource<SecurityContext> jwkSource(JwtKeyStoreProperties jwtKeyStoreProperties) throws IOException, KeyStoreException, CertificateException, NoSuchAlgorithmException, JOSEException {
 
 		final InputStream inputStream = jwtKeyStoreProperties.getJksLocation().getInputStream();
