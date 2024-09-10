@@ -39,7 +39,7 @@ awardsapi:
     dbname: supriodonto_dev
     username: root
     password: 123456
-    csv-file-path: movielist.csv
+    csv-file-path: movielist-test.csv
 
   jwt:
     keystore:

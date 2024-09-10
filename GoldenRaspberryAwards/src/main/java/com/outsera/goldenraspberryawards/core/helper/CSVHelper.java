@@ -11,6 +11,8 @@ import java.io.Reader;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.Objects.isNull;
+
 @Log4j2
 public class CSVHelper {
 
@@ -54,6 +56,32 @@ public class CSVHelper {
         }
 
         return records;
+    }
+
+    public static List<Map<String, Set<Object>>> parseData(String cvsFilePath) {
+
+        List<Map<String,Object>> dataFromCsv = new ArrayList<>();
+
+        if(isNull(cvsFilePath)) {
+            log.error("CSV file path not found in application.properties");
+            return null;
+        }
+
+        try {
+            dataFromCsv = CSVHelper.readCSV(cvsFilePath, ";", null,
+                    Set.of("year", "title", "studios", "producers", "winner"));
+        } catch (IOException e) {
+            log.error("Error reading CSV file: {}", e.getMessage());
+        }
+
+        List<Map<String, Set<Object>>> parsedData = parseData(dataFromCsv, Map.of(
+                        "studios", ",|,and\\s|\\sand\\s",
+                        "producers", ",|,and\\s|\\sand\\s"
+                )
+        );
+
+        return parsedData;
+
     }
 
     public static List<Map<String, Set<Object>>> parseData(List<Map<String, Object>> records, Map<String, String> headersToParse) {

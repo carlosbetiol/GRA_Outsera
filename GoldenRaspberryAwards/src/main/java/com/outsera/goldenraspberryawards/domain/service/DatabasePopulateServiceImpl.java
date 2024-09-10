@@ -1,7 +1,10 @@
 package com.outsera.goldenraspberryawards.domain.service;
 
+import com.outsera.goldenraspberryawards.core.database.DatabaseProperties;
+import com.outsera.goldenraspberryawards.core.helper.CSVHelper;
 import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,8 +16,10 @@ import static com.outsera.goldenraspberryawards.domain.mapper.DomainMovieAwardMa
 import static com.outsera.goldenraspberryawards.domain.mapper.DomainMovieMapper.DOMAIN_MOVIE_MAPPER;
 import static com.outsera.goldenraspberryawards.domain.mapper.DomainProducerMapper.DOMAIN_PRODUCER_MAPPER;
 import static com.outsera.goldenraspberryawards.domain.mapper.DomainStudioMapper.DOMAIN_STUDIO_MAPPER;
+import static java.util.Objects.isNull;
 
 @Service
+@Log4j2
 public class DatabasePopulateServiceImpl implements DatabasePopulateService {
 
     private final ProducerService producerService;
@@ -25,11 +30,32 @@ public class DatabasePopulateServiceImpl implements DatabasePopulateService {
 
     private final MovieAwardService movieAwardService;
 
-    public DatabasePopulateServiceImpl(ProducerService producerService, StudioService studioService, MovieService movieService, MovieAwardService movieAwardService) {
+    private final DatabaseProperties databaseProperties;
+
+    public DatabasePopulateServiceImpl(ProducerService producerService, StudioService studioService, MovieService movieService, MovieAwardService movieAwardService, DatabaseProperties databaseProperties) {
         this.producerService = producerService;
         this.studioService = studioService;
         this.movieService = movieService;
         this.movieAwardService = movieAwardService;
+        this.databaseProperties = databaseProperties;
+    }
+
+    @Override
+    public void populateEntities() {
+
+        log.info("Initializing Entities from CSV file");
+
+        List<Map<String, Set<Object>>> parsedData = CSVHelper.parseData(databaseProperties.getCsvFilePath());
+
+        if( isNull(parsedData) || parsedData.isEmpty() ) {
+            log.error("No data found to populate");
+            return;
+        }
+
+        populateEntities(parsedData);
+
+        log.info("Entities initialized from CSV file");
+
     }
 
     @Override

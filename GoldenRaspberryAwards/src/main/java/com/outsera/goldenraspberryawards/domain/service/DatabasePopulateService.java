@@ -6,6 +6,8 @@ import java.util.Set;
 
 public interface DatabasePopulateService {
 
+    void populateEntities();
+
     void populateEntities(List<Map<String, Set<Object>>> data);
 
 }

@@ -55,9 +55,13 @@ public class SecurityRules {
         return (UserPrincipal) authentication.getPrincipal();
     }
 
+    private Boolean isDevOrTest() {
+        return environment.acceptsProfiles(Profiles.of("dev")) || environment.acceptsProfiles(Profiles.of("test"));
+    }
+
     public String getEmail() {
 
-        if(environment.acceptsProfiles(Profiles.of("dev")))
+        if(isDevOrTest())
             return "admin@gra.com";
 
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
@@ -66,7 +70,7 @@ public class SecurityRules {
 
     public Boolean isAdmin() {
 
-        if(environment.acceptsProfiles(Profiles.of("dev")))
+        if(isDevOrTest())
             return true;
 
         Jwt jwt = (Jwt) getAuthentication().getPrincipal();
@@ -74,11 +78,11 @@ public class SecurityRules {
     }
 
     public boolean isAuthenticatedUser(Integer userId) {
-        return environment.acceptsProfiles(Profiles.of("dev")) || (getUserId().userId() != null && userId != null && getUserId().userId().equals(userId));
+        return isDevOrTest() || (getUserId().userId() != null && userId != null && getUserId().userId().equals(userId));
     }
 
     public boolean hasAuthority(String authorityName) {
-        return environment.acceptsProfiles(Profiles.of("dev")) || getAuthentication().getAuthorities().stream()
+        return isDevOrTest() || getAuthentication().getAuthorities().stream()
                 .anyMatch(authority -> authority.getAuthority().equals(authorityName));
     }
 

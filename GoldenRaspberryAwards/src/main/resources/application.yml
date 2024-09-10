@@ -25,9 +25,9 @@ spring:
   flyway:
     enabled: true
     url: jdbc:h2:mem:gra_db
-    locations: db/migration, db/data
+    locations: classpath:db/migration, classpath:db/data
     table: migrations
-    default-schema: awards_schema
+    default-schema: "awards_schema"
     user: sa
     password: password
 

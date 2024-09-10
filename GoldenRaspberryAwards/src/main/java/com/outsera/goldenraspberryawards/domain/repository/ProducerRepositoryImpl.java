@@ -91,15 +91,15 @@ public class ProducerRepositoryImpl implements ProducerRepositoryCustom {
 
         List<Producer> content = typedQuery.getResultList();
 
-        Map<String, Set<Integer>> producerYearsMap = new HashMap<>();
+        Map<String, List<Integer>> producerYearsMap = new HashMap<>();
 
         content.forEach(producer -> {
             producerYearsMap.compute(producer.getName(), (k, v) -> {
-                Set<Integer> years = producer.getMovies().stream()
+                List<Integer> years = producer.getMovies().stream()
                         .map(Movie::getMovieAwards)
                         .flatMap(Set::stream)
                         .map(MovieAward::getAwardYear)
-                        .collect(Collectors.toSet());
+                        .collect(Collectors.toList());
 
                 if (v == null) {
                     return years;
