@@ -259,16 +259,18 @@ O fluxo utilizado na API é o **Authorization Code with PKCE**.
 
   **senha: Enc$738**
 
-  ![Tela de login](src/main/resources/static/assets/images/login-screen.png)
+  ![Tela de login](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/login-screen.png)
+
+  
 
   A tela seguinte é tentativa de **redirect** realizada pelo **authorization** **server**, onde na **barra de endereço** vem na URL o authorization_code (code). Esse code deve ser copiado e reservado para que seja possível solicitar um token. No caso de desenvolvimento de um **frontend**, essa chamada serve para passar o code para prosseguir com a autenticação.
 
-  ![URL com o code](src/main/resources/static/assets/images/code-screen.png)
+  ![URL com o code](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/code-screen.png)
 
   O frontend deve comparar o state recebido na url com o state enviado. 
 
   Code recebido:
-
+  
   ```
   3l26sjlgjV7V3F8OH2XZLN6SN-FqOhKvS3ZT5f5edgbS4CkQzFqqn9nqg2UBPyPx4S4y8AsSabvYcE-wnnwye-5iQVV4RA_WGYXqQvyWsC9XiKMmxT1DGp-kDAU2dPbT
   ```
@@ -281,7 +283,7 @@ O fluxo utilizado na API é o **Authorization Code with PKCE**.
   - redirect_uri: http://localhost:3000/oauth2-redirect.html (a mesma utilizada para pegar o code)
   - code_verifier: **qP4LZb5R8XSJS5-bPigiKXYbocRzXe3EaXO95GFPVQQ** (o mesmo utilizado para pegar o code)
 
-​	![Corpo da request POST](src/main/resources/static/assets/images/post1-screen.png)
+​	![Corpo da request POST](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/post1-screen.png)
 
 Em adição ao corpo, na mesma requisição **POST** para solicitar um **token JWT**, é necessário enviar uma entrada header **Authorization**, do tipo **Basic**, enviando o client_id e password como credenciais da aplicação. Entretanto o Authorization é composto do client_id e password no formato **client_id:password** e deve ser convertido em base64.
 
@@ -296,13 +298,13 @@ Deve ser gerado o base64 de " **frontweb:123456**" que corresponde a **ZnJvbnR3Z
 Sendo assim, a entrada no header da requisição POST deve ser:
 **Authorization: Basic ZnJvbnR3ZWI6MTIzNDU2**
 
-![Header da request POST](src/main/resources/static/assets/images/post2-screen.png)
+![Header da request POST](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/post2-screen.png)
 
 > [!TIP]
 >
 > O **Postman** já converte para base 64 ao adicionar o nome de usuário e senha na aba **Authorization** com o tipo **Basic Auth**
 >
-> ![Authorization request POST](src/main/resources/static/assets/images/post3-screen.png)
+> ![Authorization request POST](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/post3-screen.png)
 
 
 
@@ -310,11 +312,11 @@ Ao realizar o POST, o JWT é recebido.
 
 **Importante**: Uma vez feita a request com um authorization_code, **se ela falhar,** ele é invalidado, não poderá mais ser usado e outro deve ser solicitado através do fluxo que utiliza o GET descrito anteriormente. O mesmo acontece **se houver muita demora** em buscar o requisitar o tokem com aquele code.
 
-![JWT token](src/main/resources/static/assets/images/post4-screen.png)
+![JWT token](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/post4-screen.png)
 
 O JWT contém todas as permissões de usuários e com ele será possível realizar as requisições na API utilizando-o no header como Bearer conforme tela abaixo:
 
-![JWT use](src/main/resources/static/assets/images/api1-screen.png)
+![JWT use](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/api1-screen.png)
 
 
 
