@@ -188,7 +188,7 @@ Abaixo as credenciais para modo de leitura caso a autenticação seja necessári
 
 **login: admin@gra.com**
 
-**senha: Enc$738**
+**senha: 2Enc$738**
 
 
 
@@ -257,7 +257,7 @@ O fluxo utilizado na API é o **Authorization Code with PKCE**.
 
   **login: admin@gra.com**
 
-  **senha: Enc$738**
+  **senha: 2Enc$738**
 
   ![Tela de login](https://github.com/carlosbetiol/GRA_Outsera/blob/main/GoldenRaspberryAwards/src/main/resources/static/assets/images/login-screen.png)
 

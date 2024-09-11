@@ -28,6 +28,8 @@ public class RequestLogRepositoryImpl implements RequestLogRepositoryCustom {
         CriteriaQuery<RequestLog> criteriaQuery = criteriaBuilder.createQuery(RequestLog.class);
         Root<RequestLog> root = criteriaQuery.from(RequestLog.class);
 
+        root.fetch("user", JoinType.LEFT);
+
         criteriaQuery.distinct(true);
 
         Predicate predicate = spec.toPredicate(root, criteriaQuery, criteriaBuilder);

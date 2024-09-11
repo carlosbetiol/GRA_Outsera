@@ -1,6 +1,8 @@
 package com.outsera.goldenraspberryawards.domain.repository;
 
 import com.outsera.goldenraspberryawards.domain.model.Movie;
+import com.outsera.goldenraspberryawards.domain.model.Producer;
+import com.outsera.goldenraspberryawards.domain.model.Studio;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -10,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -27,6 +30,8 @@ public class MovieRepositoryImpl implements MovieRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Movie> criteriaQuery = criteriaBuilder.createQuery(Movie.class);
         Root<Movie> root = criteriaQuery.from(Movie.class);
+        root.fetch("producers", JoinType.INNER);
+        root.fetch("studios", JoinType.INNER);
 
         criteriaQuery.distinct(true);
 

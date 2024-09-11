@@ -1,6 +1,9 @@
 package com.outsera.goldenraspberryawards.domain.repository;
 
 import com.outsera.goldenraspberryawards.domain.model.Permission;
+import com.outsera.goldenraspberryawards.domain.model.Role;
+import com.outsera.goldenraspberryawards.domain.model.RolePermission;
+import com.outsera.goldenraspberryawards.domain.model.User;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
@@ -27,6 +30,10 @@ public class PermissionRepositoryImpl implements PermissionRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Permission> criteriaQuery = criteriaBuilder.createQuery(Permission.class);
         Root<Permission> root = criteriaQuery.from(Permission.class);
+
+        Fetch<Permission, RolePermission> permissionRolesFetch = root.fetch("permissionRoles", JoinType.LEFT);
+        Fetch<RolePermission, Role> roleFetch = permissionRolesFetch.fetch("role", JoinType.LEFT);
+        roleFetch.fetch("users", JoinType.LEFT);
 
         criteriaQuery.distinct(true);
 

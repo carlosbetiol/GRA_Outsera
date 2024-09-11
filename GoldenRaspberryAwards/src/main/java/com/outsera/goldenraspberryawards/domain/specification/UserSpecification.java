@@ -2,7 +2,10 @@ package com.outsera.goldenraspberryawards.domain.specification;
 
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.CriteriaStatusEnum;
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.UserCriteria;
+import com.outsera.goldenraspberryawards.domain.model.Role;
 import com.outsera.goldenraspberryawards.domain.model.User;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,6 +19,9 @@ public class UserSpecification {
         criteria.resolveMandatoryData();
 
         return (root, query, builder) -> {
+
+            Join<User, Role> roleJoin = root.join("roles", JoinType.INNER);
+
             List<Predicate> predicates = new ArrayList<>();
 
             if (criteria.getStatus() != null && !criteria.getStatus().equals(CriteriaStatusEnum.ALL)) {
@@ -27,7 +33,7 @@ public class UserSpecification {
             }
 
             if (criteria.getRoleIdentifier() != null && !criteria.getRoleIdentifier().isEmpty()) {
-                predicates.add(root.get("user").get("roles").in(criteria.getRoleIdentifier()));
+                predicates.add(roleJoin.get("roles").in(criteria.getRoleIdentifier()));
             }
 
             if (criteria.getSearch() != null && !criteria.getSearch().isEmpty()) {
