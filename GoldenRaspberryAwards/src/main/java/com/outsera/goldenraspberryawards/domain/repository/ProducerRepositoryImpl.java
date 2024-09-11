@@ -12,6 +12,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.*;
@@ -30,6 +31,9 @@ public class ProducerRepositoryImpl implements ProducerRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<Producer> criteriaQuery = criteriaBuilder.createQuery(Producer.class);
         Root<Producer> root = criteriaQuery.from(Producer.class);
+        Fetch<Producer, Movie> fetchMovie = root.fetch("movies", JoinType.LEFT);
+        fetchMovie.fetch("studios", JoinType.LEFT);
+        fetchMovie.fetch("movieAwards", JoinType.LEFT);
 
         criteriaQuery.distinct(true);
 

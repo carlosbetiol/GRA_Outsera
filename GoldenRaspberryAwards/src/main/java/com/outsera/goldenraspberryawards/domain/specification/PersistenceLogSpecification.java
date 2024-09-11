@@ -2,6 +2,9 @@ package com.outsera.goldenraspberryawards.domain.specification;
 
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.PersistenceLogCriteria;
 import com.outsera.goldenraspberryawards.domain.model.PersistenceLog;
+import com.outsera.goldenraspberryawards.domain.model.User;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -16,6 +19,9 @@ public class PersistenceLogSpecification {
         criteria.resolveMandatoryData();
 
         return (root, query, builder) -> {
+
+            Join<PersistenceLog, User> userJoin = root.join("user", JoinType.LEFT);
+
             List<Predicate> predicates = new ArrayList<>();
 
             if (criteria.getStartDate() != null && criteria.getEndDate() == null) {
@@ -53,11 +59,11 @@ public class PersistenceLogSpecification {
             }
 
             if (criteria.getUserId() != null && !criteria.getUserId().isEmpty()) {
-                predicates.add(root.get("user").get("id").in(criteria.getUserId()));
+                predicates.add(userJoin.get("id").in(criteria.getUserId()));
             }
 
             if (criteria.getEmail() != null && !criteria.getEmail().isEmpty()) {
-                predicates.add(root.get("user").get("email").in(criteria.getEmail()));
+                predicates.add(userJoin.get("email").in(criteria.getEmail()));
             }
 
             if (criteria.getAction() != null && !criteria.getAction().isEmpty()) {
