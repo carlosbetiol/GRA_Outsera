@@ -1,5 +1,6 @@
 package com.outsera.goldenraspberryawards.domain.repository;
 
+import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -27,6 +28,10 @@ public class MovieAwardRepositoryImpl implements MovieAwardRepositoryCustom {
         CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
         CriteriaQuery<MovieAward> criteriaQuery = criteriaBuilder.createQuery(MovieAward.class);
         Root<MovieAward> root = criteriaQuery.from(MovieAward.class);
+
+        Fetch<MovieAward, Movie> fetchMovie = root.fetch("movieWinner", JoinType.INNER);
+        fetchMovie.fetch("producers", JoinType.INNER);
+        fetchMovie.fetch("studios", JoinType.INNER);
 
         criteriaQuery.distinct(true);
 

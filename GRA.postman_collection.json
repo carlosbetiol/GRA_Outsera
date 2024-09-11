@@ -7,6 +7,81 @@
 	},
 	"item": [
 		{
+			"name": "Get JWT token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();",
+							"pm.environment.set(\"token\", jsonData.access_token);",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "123456",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "frontweb",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "grant_type",
+							"value": "authorization_code",
+							"type": "text"
+						},
+						{
+							"key": "code",
+							"value": "LM6gQkA3987St1HKmXSySLPMq_YNjVEf1_SWHj6NZTa4vHGY8ID7-ORpAI8JP8zMIbUIy_D-ZZGF8hCq_Z4idgL_0PMXgwvKQGyuQQyNoj7U_T2wvWfrPoSgZwip_XuR",
+							"type": "text"
+						},
+						{
+							"key": "redirect_uri",
+							"value": "http://localhost:3000/oauth2-redirect.html",
+							"type": "text"
+						},
+						{
+							"key": "code_verifier",
+							"value": "qP4LZb5R8XSJS5-bPigiKXYbocRzXe3EaXO95GFPVQQ",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://host.local:8080/oauth2/token",
+					"protocol": "http",
+					"host": [
+						"host",
+						"local"
+					],
+					"port": "8080",
+					"path": [
+						"oauth2",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Paged Producers",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -242,7 +317,14 @@
 			},
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJ4NXQjUzI1NiI6Ii01NGg1c3pKUFNLRHpyUExtS3psQVRTUHAzdUlxRGtFX2JHSmxYSzVveEEiLCJraWQiOiJwZWRpZG9zYXBpLWRldiIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiJhZG1pbkBncmEuY29tIiwiaXNzIjoiaHR0cDovL2hvc3QubG9jYWw6ODA4MCIsImlzQWRtaW4iOiJ5ZXMiLCJ1c2VySWQiOiIxIiwiYXV0aG9yaXRpZXMiOlsiQVdEX1ZJRVciLCJSTEVfVklFVyIsIkFXRF9JTlMiLCJTVERfREVMIiwiVVNSX1ZJRVciLCJQUkNfRURUIiwiUFJDX0lOUyIsIlBFUk1fVklFVyIsIkFXRF9ERUwiLCJMT0dfVklFVyIsIkFXRF9FRFQiLCJQUkNfREVMIiwiU1REX0lOUyIsIk1PVl9JTlMiLCJNT1ZfREVMIiwiUFJDX1ZJRVciLCJTVERfVklFVyIsIk1PVl9WSUVXIiwiTU9WX0VEVCIsIlNURF9FRFQiXSwiYXVkIjoiZnJvbnR3ZWIiLCJuYmYiOjE3MjYwMTI4NDYsInNjb3BlIjpbIlJFQUQiLCJXUklURSJdLCJuYW1lIjoiU3lzdGVtIEFkbWluaXN0cmF0b3IiLCJleHAiOjE3MjYwMTY0NDYsImlhdCI6MTcyNjAxMjg0NiwianRpIjoiN2QwYzJmNTItNTRkMy00MDUxLTkxYjEtOTQ2ZDYxNDRhYTM3IiwiZW1haWwiOiJhZG1pbkBncmEuY29tIn0.GLdsxtw1sGhIupy1HM0oYhq47wiDFtwTnkchSdOPvh_Jy-NXcxbCcr3VoiVqi1RuM7RgP1qePF8dPcaglxWDyPLV2XpgCjvcTP66mrDnprsOs8BElZt67JpmqK0Gi4JBrTWV8d3Dpy2W2nmi8uvo7k7HEz1kX-A0CrUy7lg4d389UYJx3bOuEvegqB7NBG3DgEaqwtbfZReatokqmNREKOIdvIxhdt8TvHQjCt_5STPE-SyPJ-SkUd1qeK4mR5t8YUfg68sA-jeYLmc2cRjdTyyJTcJWkDI1w28w2XtrrG8--8gjya5XNdeWlQ4QBJtp87f_I0w3T-pDB5UFs_xsqg",
+							"type": "string"
+						}
+					]
 				},
 				"method": "GET",
 				"header": [],
@@ -256,10 +338,11 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/v1/producers/reports/top",
+					"raw": "http://host.local:8080/v1/producers/reports/top",
 					"protocol": "http",
 					"host": [
-						"localhost"
+						"host",
+						"local"
 					],
 					"port": "8080",
 					"path": [

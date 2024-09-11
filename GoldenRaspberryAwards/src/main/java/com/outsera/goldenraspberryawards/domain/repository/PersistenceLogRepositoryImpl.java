@@ -28,6 +28,8 @@ public class PersistenceLogRepositoryImpl implements PersistenceLogRepositoryCus
         CriteriaQuery<PersistenceLog> criteriaQuery = criteriaBuilder.createQuery(PersistenceLog.class);
         Root<PersistenceLog> root = criteriaQuery.from(PersistenceLog.class);
 
+        root.fetch("user", JoinType.LEFT);
+
         criteriaQuery.distinct(true);
 
         Predicate predicate = spec.toPredicate(root, criteriaQuery, criteriaBuilder);

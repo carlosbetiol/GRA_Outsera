@@ -5,6 +5,7 @@ import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.PermissionC
 import com.outsera.goldenraspberryawards.domain.model.Permission;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 

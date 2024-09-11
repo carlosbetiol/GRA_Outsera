@@ -29,6 +29,8 @@ public class UserRepositoryImpl implements UserRepositoryCustom {
         CriteriaQuery<User> criteriaQuery = criteriaBuilder.createQuery(User.class);
         Root<User> root = criteriaQuery.from(User.class);
 
+        root.fetch("roles", JoinType.INNER);
+
         criteriaQuery.distinct(true);
 
         Predicate predicate = spec.toPredicate(root, criteriaQuery, criteriaBuilder);
