@@ -65,7 +65,7 @@ Github Project: [Project Roadmap](https://github.com/users/carlosbetiol/projects
 - [x] Logs de HTTP Requests (filters and interceptors)
 - [x] OpenAPI, SpringDoc e Swagger (http://localhost:8080/docs)
 - [x] Internationalization i18n
-- [x] Exception Handler Control Advice
+- [x] Exception Handler Controller Advice
 - [x] Spring Boot
 - [x] Spring Security
 - [x] Spring Security Oauth2 Authorization Server

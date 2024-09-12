@@ -2,6 +2,7 @@ package com.outsera.goldenraspberryawards.domain.service;
 
 import com.outsera.goldenraspberryawards.api.contextual.ContextualRequest;
 import com.outsera.goldenraspberryawards.api.v1.model.criteriafilter.ProducerCriteria;
+import com.outsera.goldenraspberryawards.core.cache.CachingService;
 import com.outsera.goldenraspberryawards.domain.exception.EntityInUseException;
 import com.outsera.goldenraspberryawards.domain.exception.ProducerNotFoundException;
 import com.outsera.goldenraspberryawards.domain.model.Producer;
@@ -20,14 +21,21 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.outsera.goldenraspberryawards.domain.setup.CacheNaming.CN_PRODUCER;
+
 @Service
 public class ProducerServiceImpl extends AbstractService implements ProducerService {
 
+    private final static String FILTER_KEY = "producer-filter";
+
     private final ProducerRepository producerRepository;
 
-    public ProducerServiceImpl(ContextualRequest contextualRequest, ProducerRepository producerRepository) {
+    private final CachingService caching;
+
+    public ProducerServiceImpl(ContextualRequest contextualRequest, ProducerRepository producerRepository, CachingService caching) {
         super(contextualRequest);
         this.producerRepository = producerRepository;
+        this.caching = caching;
     }
 
     @Override
@@ -61,7 +69,12 @@ public class ProducerServiceImpl extends AbstractService implements ProducerServ
 
     @Override
     public List<Producer> findAll() {
-        return producerRepository.findAllByOrderByNameAsc();
+        return caching.getCacheHolder(CN_PRODUCER)
+                .fromKeys(FILTER_KEY, "teste")
+                .rememberOf(() -> {
+                    String a = "teste";
+                    return producerRepository.findAllByOrderByNameAsc();
+                });
     }
 
     @Override

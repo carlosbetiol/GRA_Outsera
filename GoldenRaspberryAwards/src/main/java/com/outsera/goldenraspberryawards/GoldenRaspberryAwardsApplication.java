@@ -6,11 +6,13 @@ import com.outsera.goldenraspberryawards.core.security.SecurityProperties;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.ApplicationContext;
 
 import java.util.TimeZone;
 
 @SpringBootApplication
+@EnableCaching
 @EnableConfigurationProperties( {SecurityProperties.class, DatabaseProperties.class} )
 public class GoldenRaspberryAwardsApplication {
 
