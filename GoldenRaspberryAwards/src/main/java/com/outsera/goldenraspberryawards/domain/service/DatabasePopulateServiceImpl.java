@@ -6,11 +6,9 @@ import com.outsera.goldenraspberryawards.domain.model.Movie;
 import com.outsera.goldenraspberryawards.domain.model.MovieAward;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static com.outsera.goldenraspberryawards.domain.mapper.DomainMovieAwardMapper.DOMAIN_MOVIE_AWARD_MAPPER;
 import static com.outsera.goldenraspberryawards.domain.mapper.DomainMovieMapper.DOMAIN_MOVIE_MAPPER;
@@ -41,24 +39,32 @@ public class DatabasePopulateServiceImpl implements DatabasePopulateService {
     }
 
     @Override
+    @Transactional
     public void populateEntities() {
 
         log.info("Initializing Entities from CSV file");
 
-        List<Map<String, Set<Object>>> parsedData = CSVHelper.parseData(databaseProperties.getCsvFilePath());
 
-        if( isNull(parsedData) || parsedData.isEmpty() ) {
-            log.error("No data found to populate");
-            return;
+        try {
+            List<Map<String, Set<Object>>> parsedData = CSVHelper.parseData(databaseProperties.getCsvFilePath());
+
+            if( isNull(parsedData) || parsedData.isEmpty() ) {
+                log.error("Failed to populate data from CSV file - Reason: No data found to populate");
+                return;
+            }
+
+            populateEntities(parsedData);
+
+            log.info("Entities initialized from CSV file");
+        } catch (IllegalArgumentException e) {
+            log.error("Failed to populate data from CSV file - Reason: {}", e.getMessage());
+
         }
-
-        populateEntities(parsedData);
-
-        log.info("Entities initialized from CSV file");
 
     }
 
     @Override
+    @Transactional
     public void populateEntities(List<Map<String, Set<Object>>> data) {
 
         data.forEach( map -> {
@@ -86,7 +92,7 @@ public class DatabasePopulateServiceImpl implements DatabasePopulateService {
             Movie persistedMovie = movieService.saveLogLess(movie);
 
             Set<Object> winners = map.get("winner");
-            Optional<Object> winner = winners.stream().findFirst();
+            Optional<Object> winner = winners.stream().filter(Objects::nonNull).findFirst();
 
             if (winner.isPresent() && List.of("yes", "winner").contains(winner.get().toString())) {
 

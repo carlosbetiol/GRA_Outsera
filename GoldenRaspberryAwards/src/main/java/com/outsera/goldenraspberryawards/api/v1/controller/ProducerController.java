@@ -59,7 +59,7 @@ public class ProducerController implements ProducerControllerOpenApi {
     }
 
     @CheckSecurity.Producers.CanView
-    @GetMapping(path = "/reports/top", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(path = "/reports/top-least", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.OK)
     @Override
     public AwardBorderResponseDTO getTopProducers() {

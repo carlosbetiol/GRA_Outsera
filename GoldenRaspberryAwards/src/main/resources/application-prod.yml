@@ -35,7 +35,7 @@ awardsapi:
     dbname: todo
     username: root
     password: 123456
-    csv-file-path: src/main/resources/data/movielist.csv
+    csv-file-path: data/movielist.csv
 
   jwt:
     keystore:

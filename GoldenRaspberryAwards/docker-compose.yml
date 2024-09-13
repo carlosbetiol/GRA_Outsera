@@ -28,7 +28,7 @@ services:
     env_file:
       - .env
     volumes:
-      - './src/main/resources/data:/data:/data'
+      - './data:/data'
     networks:
       - app-tier-gra
     healthcheck:

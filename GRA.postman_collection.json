@@ -311,7 +311,7 @@
 			"response": []
 		},
 		{
-			"name": "Top Producers",
+			"name": "Top/Least Producers",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
 			},
@@ -338,7 +338,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://host.local:8080/v1/producers/reports/top",
+					"raw": "http://host.local:8080/v1/producers/reports/top-least",
 					"protocol": "http",
 					"host": [
 						"host",
@@ -349,7 +349,7 @@
 						"v1",
 						"producers",
 						"reports",
-						"top"
+						"top-least"
 					],
 					"query": [
 						{
