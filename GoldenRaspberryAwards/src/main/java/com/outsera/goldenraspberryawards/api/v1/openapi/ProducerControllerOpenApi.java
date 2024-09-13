@@ -67,7 +67,7 @@ public interface ProducerControllerOpenApi {
     })
     public ProducerResponseDTO getResource(@Parameter(description = "Resource id") Long id);
 
-    @Operation(summary = "Get top producers", security = @SecurityRequirement(name = "userScheme"))
+    @Operation(summary = "Get top/least producers", security = @SecurityRequirement(name = "userScheme"))
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Resources list (empty if no resources found)",
                     content = @Content(mediaType = "application/json",
