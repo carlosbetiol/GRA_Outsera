@@ -92,10 +92,10 @@ mvn clean package -DskipTests
 
 
 
-- Subir a aplicação, que ficará respondendo **na porta 8080**
+- Subir a aplicação, que ficará respondendo **na porta 8080** (não coloque **espaços** em "dev,ignore_cors")
 
 ```
-mvn exec:java -Dspring.profiles.active=dev
+mvn exec:java -Dspring.profiles.active=dev,ignore_cors
 ```
 
 
@@ -107,6 +107,10 @@ Com a aplicação rodando, o endpoint **REQUISITO** é o seguinte:
 Método **GET**
 
 **http://localhost:8080/v1/producers/reports/top-least**
+
+> [!TIP]
+>
+> Essa URL pode ser chamada direta no navegador uma vez que é método **GET**
 
 
 
